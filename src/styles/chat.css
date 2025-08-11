@@ -1,0 +1,582 @@
+/* Chat Interface Styles */
+.chat-interface {
+  max-width: 800px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: none;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #001214;
+  box-shadow: none;
+  /* Ensure proper height for mobile */
+  min-height: 500px;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: #002226;
+  border-bottom: 1px solid rgb(229 231 235 / 15%);
+}
+
+.avatar-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.avatar-container svg {
+  width: 48px;
+  height: 48px;
+}
+
+.chat-title h3 {
+  margin: 0;
+  color: #b4d5da;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  scroll-behavior: smooth;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  /* Ensure smooth scrolling and proper scroll behavior */
+  scroll-behavior: smooth;
+  scroll-padding-top: 20px;
+  scroll-padding-bottom: 20px;
+}
+
+/* Ensure proper spacing for messages */
+.message {
+  margin-bottom: 20px;
+  scroll-margin-top: 20px; /* Add scroll margin for better positioning */
+}
+
+.assistant-message {
+  background: #002226;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.user-message {
+  color: #b4d5da;
+  padding: 12px 16px;
+  border-radius: 12px;
+  max-width: 300px;
+  margin-left: auto;
+  text-align: right;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
+.message-content {
+  white-space: pre-line;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
+/* Bullet point and list styling */
+.message-content ul,
+.message-content ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.message-content li {
+  margin: 6px 0;
+  line-height: 1.5;
+}
+
+/* Custom bullet points for lines starting with • */
+.message-content:has(br) {
+  line-height: 1.8;
+}
+
+/* Ensure proper spacing between paragraphs */
+.message-content p {
+  margin: 12px 0;
+}
+
+/* Enhanced spacing for formatted content */
+.assistant-message .message-content {
+  white-space: pre-line;
+  line-height: 1.7;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Contact information component styling */
+.contact-info {
+  background: #1E1E1E;
+  border: 1px solid rgb(229 231 235 / 15%);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.contact-header h4 {
+  color: #b4d5da;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  font-family: 'GeistMonoVF', monospace;
+}
+
+.contact-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.contact-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b4d5da;
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  flex: 1;
+}
+
+.contact-action-btn {
+  min-width: 80px;
+  height: 44px; /* Match other buttons */
+  font-size: 12px;
+  padding: 6px 12px;
+  flex-shrink: 0;
+  font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+  background: transparent;
+  border: 1px solid #cdcbff;
+  color: #cdcbff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.contact-action-btn:hover {
+  background: #cdcbff !important;
+  color: #012b31 !important;
+  border-color: #cdcbff !important;
+}
+
+.contact-action-btn span {
+  font-size: 12px;
+  font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+}
+
+/* Enhanced spacing for bullet points and lists */
+.message-content:not(:empty) {
+  position: relative;
+}
+
+/* Ensure proper spacing between different types of content */
+.assistant-message .message-content br + br {
+  margin-top: 8px;
+}
+
+/* Style bullet points and lists */
+.message-content {
+  /* Ensure proper spacing for formatted content */
+  line-height: 1.7;
+}
+
+/* Better spacing for lines with bullet points */
+.message-content:has(br) {
+  line-height: 1.8;
+}
+
+/* Ensure proper spacing between paragraphs */
+.message-content p {
+  margin: 12px 0;
+}
+
+.button-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+  align-items: center; /* Ensure buttons are aligned */
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  font-size: 14px;
+  background: #cdcbff;
+  color: #012b31;
+  font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+  width: fit-content;
+  height: 44px; /* Fixed height for all buttons */
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  background: #b8b6ff;
+  color: #012b31;
+  box-shadow: 0 4px 12px rgba(205, 203, 255, 0.3);
+}
+
+.button-text {
+  flex: 1;
+  text-align: left;
+  font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+  font-size: 13px;
+}
+
+.external-icon {
+  opacity: 0.7;
+}
+
+.btn-primary {
+  background: transparent;
+  border: 1px solid #cdcbff;
+  color: #cdcbff;
+  font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+  height: 44px; /* Fixed height */
+}
+
+.btn-primary:hover {
+  background: #cdcbff !important;
+  color: #012b31 !important;
+  border-color: #cdcbff !important;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #cdcbff;
+  color: #cdcbff;
+  font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+  height: 44px; /* Fixed height */
+}
+
+.btn-secondary:hover {
+  background: #cdcbff !important;
+  color: #012b31 !important;
+  border-color: #cdcbff !important;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #cdcbff;
+  color: #cdcbff;
+  font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+  height: 44px; /* Fixed height */
+}
+
+.btn-outline:hover {
+  background: #cdcbff !important;
+  color: #012b31 !important;
+  border-color: #cdcbff !important;
+}
+
+/* Ensure all button text uses monospace font */
+.btn * {
+  font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+}
+
+/* Ensure variant buttons override base button styles on hover */
+.btn.btn-primary:hover,
+.btn.btn-secondary:hover,
+.btn.btn-outline:hover {
+  background: #cdcbff !important;
+  color: #012b31 !important;
+  border-color: #cdcbff !important;
+}
+
+.btn span {
+  font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+}
+
+/* Universal button font rule */
+button {
+  font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+}
+
+/* Ensure any button-like elements also use monospace */
+[class*="btn"] {
+  font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+}
+
+/* More specific button font rules */
+.chat-interface .btn,
+.chat-interface button,
+.chat-interface .contact-action-btn {
+  font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+}
+
+.chat-interface .btn *,
+.chat-interface .btn span,
+.chat-interface .contact-action-btn *,
+.chat-interface .contact-action-btn span {
+  font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+}
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #6b7280;
+  font-style: italic;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
+.loading-indicator .avatar-container {
+  position: relative;
+}
+
+.loading-indicator .avatar-container svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* Thinking animation with bouncing dots */
+.thinking-animation {
+  position: absolute;
+  right: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 4px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background: #012b31;
+  border-radius: 50%;
+  animation: bounce 1.4s ease-in-out infinite both;
+}
+
+.dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .button-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .chat-interface {
+    height: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .chat-header {
+    padding: 16px;
+    flex-shrink: 0;
+  }
+  
+  .avatar-container svg {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .thinking-animation {
+    right: -32px;
+  }
+  
+  .dot {
+    width: 5px;
+    height: 5px;
+  }
+  
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    padding-bottom: 0;
+  }
+} 
+
+/* Responsive design for contact info and chat input */
+@media (max-width: 640px) {
+  .contact-info {
+    padding: 12px;
+    margin-top: 8px;
+  }
+  
+  .contact-header h4 {
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  
+  .contact-action-btn {
+    min-width: 70px;
+    height: 28px;
+    padding: 4px 8px;
+  }
+  
+  .contact-action-btn span {
+    font-size: 11px;
+  }
+  
+  .chat-input-container {
+    padding: 20px;
+    background: black;
+    border-top: 1px solid rgb(229 231 235 / 15%);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 0 0 24px 24px;
+  }
+  
+  .chat-input {
+    font-size: 16px;
+    padding: 16px 18px;
+    min-height: 56px;
+    border: 2px solid rgb(229 231 235 / 15%);
+    background: #1E1E1E;
+    color: #b4d5da;
+    border-radius: 12px;
+    flex: 1;
+  }
+  
+  .chat-input:focus {
+    border-color: #cdcbff;
+    box-shadow: 0 0 0 3px rgba(205, 203, 255, 0.3);
+  }
+  
+  .send-button {
+    width: 56px;
+    height: 56px;
+    border: 2px solid #cdcbff;
+    background: transparent;
+    color: #cdcbff;
+    border-radius: 12px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .send-button:hover:not(:disabled) {
+    background: #cdcbff;
+    color: #012b31;
+  }
+} 
+
+/* Chat Input Form - Desktop styles */
+.chat-input-container {
+  padding: 20px;
+  background: black;
+  border-top: 1px solid rgb(229 231 235 / 15%);
+  display: flex;
+  align-items: center;
+}
+
+.chat-input-form {
+  width: 100%;
+}
+
+.input-wrapper {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid rgb(229 231 235 / 15%);
+  border-radius: 12px;
+  background: #1E1E1E;
+  color: #b4d5da;
+  font-family: var(--font-mono), "GeistMonoVF", "SF Mono", monospace;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.chat-input::placeholder {
+  color: #6b7280;
+}
+
+.chat-input:focus {
+  border-color: #cdcbff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(205, 203, 255, 0.3);
+}
+
+.chat-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.send-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #cdcbff;
+  border-radius: 12px;
+  background: transparent;
+  color: #cdcbff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  font-family: var(--font-mono), "GeistMonoVF", "SF Mono", monospace;
+}
+
+.send-button:hover:not(:disabled) {
+  background: #cdcbff !important;
+  color: #012b31 !important;
+  border-color: #cdcbff !important;
+}
+
+.send-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #1E1E1E;
+  color: #6b7280;
+  border-color: rgb(229 231 235 / 15%);
+}
+
+.send-button svg {
+  width: 16px;
+  height: 16px;
+} 
