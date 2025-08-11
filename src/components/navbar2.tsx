@@ -139,7 +139,7 @@ const Navbar2 = () => {
             <Button 
               variant="default" 
               onClick={handleContactClick}
-              className="max-lg:hidden"
+              className="max-lg:hidden rounded-full"
             >
               <span className="relative z-10">Contact</span>
             </Button>
@@ -187,7 +187,7 @@ const Navbar2 = () => {
                         openDropdown === link.label ? null : link.label,
                       )
                     }
-                    className="text-primary flex w-full items-center justify-between text-base font-medium"
+                    className="text-primary flex w-full items-center justify-between text-base font-medium rounded-lg hover:bg-accent/50 px-3 py-2 transition-colors"
                   >
                     {link.label}
                     <ChevronRight
@@ -237,7 +237,7 @@ const Navbar2 = () => {
                     setIsMenuOpen(false);
                     setIsChatModalOpen(true);
                   }}
-                  className="text-primary hover:text-primary/80 py-4 text-base font-medium transition-colors first:pt-0 last:pb-0 w-full text-left"
+                  className="text-primary hover:text-primary/80 py-4 text-base font-medium transition-colors first:pt-0 last:pb-0 w-full text-left rounded-lg hover:bg-accent/50 px-3 py-2 transition-colors"
                 >
                   {link.label}
                 </button>
@@ -246,7 +246,7 @@ const Navbar2 = () => {
                   key={link.label}
                   href={link.href}
                   className={cn(
-                    'text-primary hover:text-primary/80 py-4 text-base font-medium transition-colors first:pt-0 last:pb-0',
+                    'text-primary hover:text-primary/80 py-4 text-base font-medium transition-colors first:pt-0 last:pb-0 rounded-lg hover:bg-accent/50 px-3 py-2 transition-colors',
                     pathname === link.href && 'text-muted-foreground',
                   )}
                   onClick={() => setIsMenuOpen(false)}

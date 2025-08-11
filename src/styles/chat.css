@@ -2,7 +2,7 @@
 .chat-interface {
   max-width: 800px;
   margin: 0 auto;
-  height: 100%;
+  height: 600px; /* Fixed height instead of 100% */
   display: flex;
   flex-direction: column;
   border: none;
@@ -10,8 +10,12 @@
   overflow: hidden;
   background: #001214;
   box-shadow: none;
-  /* Ensure proper height for mobile */
-  min-height: 500px;
+  /* Fixed height for consistent sizing */
+  min-height: 600px;
+  max-height: 600px;
+  /* Prevent any expansion */
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 .chat-header {
@@ -39,17 +43,24 @@
   color: #b4d5da;
 }
 
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-  scroll-behavior: smooth;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  /* Ensure smooth scrolling and proper scroll behavior */
-  scroll-behavior: smooth;
-  scroll-padding-top: 20px;
-  scroll-padding-bottom: 20px;
-}
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    scroll-behavior: smooth;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    /* Ensure smooth scrolling and proper scroll behavior */
+    scroll-behavior: smooth;
+    scroll-padding-top: 20px;
+    scroll-padding-bottom: 20px;
+    /* Prevent expansion beyond container */
+    max-height: calc(100% - 120px); /* Account for header and input area */
+  }
+  
+  /* Even smaller font size for mobile agent responses */
+  .assistant-message .message-content {
+    font-size: 13px;
+  }
 
 /* Ensure proper spacing for messages */
 .message {
@@ -110,6 +121,7 @@
   word-wrap: break-word;
   overflow-wrap: break-word;
   color: rgba(255, 255, 255, 0.7);
+  font-size: 14px; /* Smaller font size for agent responses */
 }
 
 /* Contact information component styling */
@@ -171,6 +183,8 @@
   background: #cdcbff !important;
   color: #012b31 !important;
   border-color: #cdcbff !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(205, 203, 255, 0.3) !important;
 }
 
 .contact-action-btn span {
@@ -212,29 +226,32 @@
   align-items: center; /* Ensure buttons are aligned */
 }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
-  border-radius: 50px;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s;
-  font-size: 14px;
-  background: #cdcbff;
-  color: #012b31;
+/* Chat-specific button styles - must override globals.css */
+.chat-interface .btn,
+.chat-modal-content .btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 12px 16px !important;
+  border-radius: 50px !important;
+  border: none !important;
+  cursor: pointer !important;
+  font-weight: 500 !important;
+  transition: all 0.2s !important;
+  font-size: 14px !important;
+  background: #cdcbff !important;
+  color: #012b31 !important;
   font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
-  width: fit-content;
-  height: 44px; /* Fixed height for all buttons */
+  width: fit-content !important;
+  height: 44px !important; /* Fixed height for all buttons */
 }
 
-.btn:hover {
-  transform: translateY(-1px);
-  background: #b8b6ff;
-  color: #012b31;
-  box-shadow: 0 4px 12px rgba(205, 203, 255, 0.3);
+.chat-interface .btn:hover,
+.chat-modal-content .btn:hover {
+  transform: translateY(-1px) !important;
+  background: #b8b6ff !important;
+  color: #012b31 !important;
+  box-shadow: 0 4px 12px rgba(205, 203, 255, 0.3) !important;
 }
 
 .button-text {
@@ -248,40 +265,45 @@
   opacity: 0.7;
 }
 
-.btn-primary {
-  background: transparent;
-  border: 1px solid #cdcbff;
-  color: #cdcbff;
+.chat-interface .btn-primary,
+.chat-modal-content .btn-primary {
+  background: transparent !important;
+  border: 1px solid #cdcbff !important;
+  color: #cdcbff !important;
   font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
-  height: 44px; /* Fixed height */
+  height: 44px !important; /* Fixed height */
 }
 
-.btn-primary:hover {
+.chat-interface .btn-primary:hover,
+.chat-modal-content .btn-primary:hover {
   background: #cdcbff !important;
   color: #012b31 !important;
   border-color: #cdcbff !important;
 }
 
-.btn-secondary {
-  background: transparent;
-  border: 1px solid #cdcbff;
-  color: #cdcbff;
+.chat-interface .btn-secondary,
+.chat-modal-content .btn-secondary {
+  background: transparent !important;
+  border: 1px solid #cdcbff !important;
+  color: #cdcbff !important;
   font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
-  height: 44px; /* Fixed height */
+  height: 44px !important; /* Fixed height */
 }
 
-.btn-secondary:hover {
+.chat-interface .btn-secondary:hover,
+.chat-modal-content .btn-secondary:hover {
   background: #cdcbff !important;
   color: #012b31 !important;
   border-color: #cdcbff !important;
 }
 
-.btn-outline {
-  background: transparent;
-  border: 1px solid #cdcbff;
-  color: #cdcbff;
+.chat-interface .btn-outline,
+.chat-modal-content .btn-outline {
+  background: transparent !important;
+  border: 1px solid #cdcbff !important;
+  color: #cdcbff !important;
   font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
-  height: 44px; /* Fixed height */
+  height: 44px !important; /* Fixed height */
 }
 
 .btn-outline:hover {
@@ -291,20 +313,25 @@
 }
 
 /* Ensure all button text uses monospace font */
-.btn * {
+.chat-interface .btn *,
+.chat-modal-content .btn * {
   font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
 }
 
 /* Ensure variant buttons override base button styles on hover */
-.btn.btn-primary:hover,
-.btn.btn-secondary:hover,
-.btn.btn-outline:hover {
+.chat-interface .btn.btn-primary:hover,
+.chat-interface .btn.btn-secondary:hover,
+.chat-interface .btn.btn-outline:hover,
+.chat-modal-content .btn.btn-primary:hover,
+.chat-modal-content .btn.btn-secondary:hover,
+.chat-modal-content .btn.btn-outline:hover {
   background: #cdcbff !important;
   color: #012b31 !important;
   border-color: #cdcbff !important;
 }
 
-.btn span {
+.chat-interface .btn span,
+.chat-modal-content .btn span {
   font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
 }
 
@@ -396,11 +423,13 @@ button {
   }
   
   .chat-interface {
-    height: 100%;
+    height: 550px; /* Fixed height for mobile instead of 100% */
     border-radius: 24px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    min-height: 550px;
+    max-height: 550px;
   }
   
   .chat-header {

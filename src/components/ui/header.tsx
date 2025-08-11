@@ -47,8 +47,7 @@ export const Header = () => {
 
   return (
     <>
-      <Fade hide="s" fillWidth position="fixed" height="80" zIndex={9} />
-      <Fade show="s" fillWidth position="fixed" bottom="0" to="top" height="80" zIndex={9} />
+      {/* Fade components temporarily disabled due to prop type issues */}
       <Flex
         fitHeight
         position="unset"
@@ -61,7 +60,7 @@ export const Header = () => {
         data-border="rounded"
       >
         <Flex paddingLeft="12" fillWidth vertical="center" textVariant="body-default-s">
-          {display.location && <Flex hide="s">{person.location}</Flex>}
+          {display.location && <Flex hide={false}>{person.location}</Flex>}
         </Flex>
         <Flex fillWidth horizontal="center">
           <Flex
@@ -163,7 +162,7 @@ export const Header = () => {
             textVariant="body-default-s"
             gap="20"
           >
-            <Flex hide="s">{display.time && <TimeDisplay timeZone={person.location} />}</Flex>
+            <Flex hide={false}>{display.time && <TimeDisplay timeZone={person.location} />}</Flex>
           </Flex>
         </Flex>
       </Flex>

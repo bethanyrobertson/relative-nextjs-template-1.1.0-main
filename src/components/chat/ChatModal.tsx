@@ -35,7 +35,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
         
         {/* Modal Content */}
         <div 
-          className="relative w-full h-[calc(100vh-2rem)] sm:h-[80vh] rounded-2xl overflow-hidden chat-modal-content no-white-box"
+          className="relative w-full h-[600px] sm:h-[600px] rounded-2xl overflow-hidden chat-modal-content no-white-box"
           onClick={(e) => e.stopPropagation()}
           style={{ 
             background: 'transparent',
@@ -44,7 +44,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
           }}
         >
           {/* Chat Interface */}
-          <div className="h-full">
+          <div className="h-full flex items-center justify-center">
             <ChatInterface />
           </div>
         </div>
