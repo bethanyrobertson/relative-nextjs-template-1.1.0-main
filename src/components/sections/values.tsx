@@ -43,10 +43,10 @@ const Values = () => {
             <div className="flex gap-2.5" key={index}>
               <Icon className="mt-0.5 size-[18px] shrink-0" />
               <div>
-                <h3 className="text-lg !leading-none tracking-[-0.96px] lg:text-2xl">
+                <h3 className="font-mono font-bold !leading-none">
                   {value.title}
                 </h3>
-                <p className="text-muted-foreground mt-2.5 text-sm tracking-[-0.36px]">
+                <p className="text-muted-foreground mt-2.5 text-sm">
                   {value.description}
                 </p>
               </div>

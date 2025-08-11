@@ -7,7 +7,7 @@ import LayoutWrapper from '@/components/layout-wrapper';
 
 // Geist Variable Font for sans-serif
 const geistSans = localFont({
-  src: './fonts/Geist[wght].woff2', // Note: capital G
+  src: './fonts/Geist[wght].woff2',
   variable: '--font-sans',
   weight: '100 900',
   display: 'swap',
@@ -26,13 +26,6 @@ const itcGaramond = localFont({
   src: './fonts/ITCGaramondStd-BkCond.woff',
   variable: '--font-serif',
   weight: '400',
-  display: 'swap',
-});
-
-const GeistMonoVF = localFont({
-  src: './fonts/geist[wght].woff2',
-  variable: '--font-sans',
-  weight: '100 900',
   display: 'swap',
 });
 

@@ -10,7 +10,8 @@ import * as THREE from 'three'
 import styles from './Gallery3D.module.css'
 
 extend(geometry)
-const inter = import('@pmndrs/assets/fonts/inter_regular.woff')
+// Using a fallback font since @pmndrs/assets is not available
+const inter = Promise.resolve({ default: '/fonts/GeistMonoVF.woff' })
 
 // Scene component
 function Scene({ categories, imagePrefix, ...props }) {
