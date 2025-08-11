@@ -37,7 +37,7 @@ interface ChatContextType {
   retryLastMessage: () => void;
   retryAssistant: () => void;
   currentMode: ChatMode;
-  messagesEndRef: React.RefObject<HTMLDivElement>;
+  messagesEndRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export const useSecureChat = (options: UseSecureChatOptions = {}): ChatContextType => {

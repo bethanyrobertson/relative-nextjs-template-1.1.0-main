@@ -33,7 +33,7 @@ const formatMessage = (message: string): string => {
   if (!message) return '';
   
   // Clean up markdown symbols and formatting
-  let cleanedMessage = message
+  const cleanedMessage = message
     // Remove markdown headers (###, ##, #)
     .replace(/^#{1,6}\s+/gm, '')
     // Remove bold/italic markers (**text**, *text*)

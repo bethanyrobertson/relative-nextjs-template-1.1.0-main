@@ -63,7 +63,7 @@ const TimelineElevenist = () => {
     <section id="accelerate-planning" className="">
       <div className="border-none">
         <SectionHeader
-          iconTitle="Process"
+          category="Process"
           title="Ideation to Handoff"
           icon={Rocket}
           description={

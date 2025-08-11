@@ -12,6 +12,7 @@ const FeaturesDeliveredDesignSystem = () => {
           category="FEATURES"
           title="Features Delivered"
           icon={Loader}
+          description="Comprehensive design system features delivered through robust token management and developer-friendly integration"
         />
         <div className="grid grid-cols-1 gap-6 md:grid-cols-5">
           <div className="flex flex-col justify-between rounded-lg bg-accent md:col-span-2">

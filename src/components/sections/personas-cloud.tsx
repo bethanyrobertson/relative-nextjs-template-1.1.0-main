@@ -7,7 +7,7 @@ import SectionHeader from '../section-header';
 type ValueType = {
   title: string;
   description: string | React.ReactNode;
-  icon: React.ElementType;
+  icon: React.ComponentType<{ className?: string }>;
 };
 
 const values: ValueType[] = [

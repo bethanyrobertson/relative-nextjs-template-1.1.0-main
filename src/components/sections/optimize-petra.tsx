@@ -10,7 +10,7 @@ const OptimizePetra = () => {
     <section id="optimized-scheduling" className="">
       <div className="border-none">
         <SectionHeader
-          iconTitle="RESEARCH & DISCOVERY"
+          category="RESEARCH & DISCOVERY"
           title="A Design System That Scales"
           icon={Eye}
           description={

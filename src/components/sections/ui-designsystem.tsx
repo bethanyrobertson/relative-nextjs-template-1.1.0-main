@@ -10,7 +10,7 @@ const UIDesignSystem = () => {
     <section id="adaptive-workflows" className="">
       <div className="border-none">
         <SectionHeader
-          iconTitle="User Interface"
+          category="User Interface"
           title="Design Decisions"
           icon={Shapes}
           description={

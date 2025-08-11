@@ -10,7 +10,7 @@ const Adaptive = () => {
     <section id="adaptive-workflows" className="">
       <div className="border-none">
         <SectionHeader
-          iconTitle="Adaptive"
+          category="Adaptive"
           title="Usability Audit"
           icon={Shapes}
           description={

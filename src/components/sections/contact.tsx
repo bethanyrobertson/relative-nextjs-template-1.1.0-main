@@ -54,7 +54,7 @@ const Contact = () => {
     <section className="py-14 md:py-20 lg:py-24">
       <SectionHeader
         icon={Mail}
-        iconTitle="Reach Out"
+        category="Reach Out"
         title="Get in Touch"
         description="We're here to help—reach out with any questions or feedback."
         className="border-none !pb-0"

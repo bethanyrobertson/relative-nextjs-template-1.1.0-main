@@ -91,10 +91,7 @@ export const DesignSystemFeatures = () => {
 
           {FEATURES.map((feature) => (
             <TabsContent
-                className={cn(
-                'bg-background m-0 flex-1 rounded-xl overflow-hidden',
-                feature.content.className,
-                )}
+                className="bg-background m-0 flex-1 rounded-xl overflow-hidden"
                 key={feature.title}
                 value={feature.title}
             >

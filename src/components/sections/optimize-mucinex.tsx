@@ -10,7 +10,7 @@ const Optimize = () => {
     <section id="optimized-scheduling" className="">
       <div className="border-none">
         <SectionHeader
-          iconTitle="Optimize"
+          category="Optimize"
           title="A Design System That Scales"
           icon={Eye}
           description={

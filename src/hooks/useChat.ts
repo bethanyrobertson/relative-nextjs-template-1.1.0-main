@@ -2,6 +2,11 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 
+// Declare gtag for Google Analytics
+declare global {
+  function gtag(...args: any[]): void;
+}
+
 // Types
 interface ChatMessage {
   id: string;
@@ -39,7 +44,7 @@ interface ChatContextType {
   retryLastMessage: () => void;
   retryAssistant: () => void;
   currentMode: ChatMode;
-  messagesEndRef: React.RefObject<HTMLDivElement>;
+  messagesEndRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export const useChat = (options: UseChatOptions = {}): ChatContextType => {

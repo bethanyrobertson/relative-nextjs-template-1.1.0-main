@@ -29,7 +29,7 @@ const NextStepsMucinex = () => {
   return (
     <section>
       <SectionHeader
-        iconTitle="We live by"
+        category="We live by"
         title="My Core Values"
         icon={Heart}
         description="I believe in principles that guide my growth and inspire my community."

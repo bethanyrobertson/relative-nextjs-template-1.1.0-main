@@ -1,4 +1,4 @@
-import { HeaderItem } from "/types/menu.ts";
+import { HeaderItem } from "./types/menu";
 
 export const headerData: HeaderItem[] = [
     { label: 'About us', href: '/#aboutus' },
