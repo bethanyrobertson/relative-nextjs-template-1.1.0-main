@@ -1,0 +1,545 @@
+'use client';
+
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+  Background,
+  ReactFlow,
+  useNodesState,
+  useEdgesState,
+  addEdge,
+  Position,
+  Controls,
+  Handle,
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
+import { Lock, Unlock, ZoomIn, ZoomOut, Rocket, RotateCcw } from 'lucide-react';
+
+import SectionHeader from '../section-header';
+
+import {
+    Blocks,
+    MessageSquare,
+    Settings,
+    Bot,
+    Zap,
+    Navigation,
+    Database,
+    Brain,
+    Search,
+    RefreshCw,
+    Eye
+  } from 'lucide-react';
+
+import dynamic from 'next/dynamic';
+
+const MotionGridDemo = dynamic(() => import('@/components/sections/motion-grid-demo').then(mod => ({ default: mod.MotionGridDemo })), {
+  ssr: false,
+  loading: () => <div className="w-8 h-8 bg-purple-500 rounded-full animate-pulse"></div>
+});
+
+// Initial nodes layout
+const initialNodes = [
+    // Background containers for grouping - Supporting Systems on top, Main Flow on bottom
+    {
+      id: 'supporting-bg',
+      data: { label: <div className="text-sm font-mono text-black font-bold">Supporting Systems</div> },
+      position: { x: 200, y: 30 },
+      style: { 
+        background: 'rgba(139, 92, 246, 0.1)', 
+        border: '1px solid rgba(139, 92, 246, 0.3)', 
+        borderRadius: '12px', 
+        width: 1230, 
+        height: 100,
+        zIndex: -1,
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        paddingTop: '8px',
+        paddingLeft: '16px'
+      },
+      draggable: false,
+      selectable: false
+    },
+    {
+      id: 'main-flow-bg',
+      data: { label: <div className="text-sm font-mono text-black font-bold">Main Processing Flow</div> },
+      position: { x: 80, y: 200 },
+      style: { 
+        background: 'rgba(59, 130, 246, 0.1)', 
+        border: '1px solid rgba(59, 130, 246, 0.3)', 
+        borderRadius: '12px', 
+        width: 1260, 
+        height: 100,
+        zIndex: -1,
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        paddingTop: '8px',
+        paddingLeft: '16px'
+      },
+      draggable: false,
+      selectable: false
+    },
+    
+    // Supporting Systems - Top Row (offset positions)
+    {
+      id: 'message-storage',
+      data: { label: <div className="flex items-center"><Database className="w-4 h-4 mr-2 flex-shrink-0" />Message Storage</div> },
+      position: { x: 220, y: 75 },
+      style: { 
+        background: '#ffffff', 
+        border: 'none', 
+        borderRadius: '6px', 
+        fontSize: '12px',
+        color: 'black',  
+        width: 160, 
+        padding: '6px',
+      }
+    },
+    {
+      id: 'context-retention',
+      data: { label: <div className="flex items-center"><Brain className="w-4 h-4 mr-2 flex-shrink-0" />Context Retention</div> },
+      position: { x: 480, y: 75 },
+      style: { 
+        background: '#ffffff', 
+        border: 'none', 
+        borderRadius: '6px', 
+        color: 'black', 
+        fontSize: '12px', 
+        width: 180, 
+        padding: '6px',
+      }
+    },
+    {
+      id: 'knowledge-retrieval',
+      data: { label: <div className="flex items-center"><Search className="w-4 h-4 mr-2 flex-shrink-0" />Knowledge Retrieval</div> },
+      position: { x: 740, y: 75 },
+      style: { 
+        background: '#ffffff', 
+        border: 'none', 
+        borderRadius: '6px', 
+        fontSize: '12px', 
+        color: 'black', 
+        width: 180, 
+        padding: '6px',
+      }
+    },
+    {
+      id: 'ui-updates',
+      data: { label: <div className="flex items-center"><RefreshCw className="w-4 h-4 mr-2 flex-shrink-0" />UI Updates</div> },
+      position: { x: 1000, y: 75 },
+      style: { 
+        background: '#ffffff', 
+        border: 'none', 
+        borderRadius: '6px', 
+        fontSize: '12px', 
+        color: 'black', 
+        width: 180, 
+        padding: '6px',
+      }
+    },
+    {
+      id: 'visual-response',
+      data: { label: <div className="flex items-center"><Eye className="w-4 h-4 mr-2 flex-shrink-0" />Visual Response</div> },
+      position: { x: 1240, y: 75 },
+      style: { 
+        background: '#ffffff', 
+        border: 'none', 
+        borderRadius: '6px', 
+        fontSize: '12px', 
+        width: 180, 
+        color: 'black', 
+        padding: '6px',
+      }
+    },
+    
+    // Main Processing Flow - Bottom Row (offset positions, not aligned with top)
+    {
+      id: 'user-query',
+      type: 'input',
+      data: { label: <div className="flex items-center"><MessageSquare className="w-4 h-4 mr-2 flex-shrink-0" />User Query</div> },
+      position: { x: 100, y: 250 },
+      style: { 
+        background: '#ffffff', 
+        border: 'none', 
+        borderRadius: '8px', 
+        color: 'black', 
+        width: 180, 
+        padding: '8px',
+      }
+    },
+    {
+      id: 'thread-management',
+      data: { label: <div className="flex items-center"><Settings className="w-4 h-4 mr-2 flex-shrink-0" />Thread Management</div> },
+      position: { x: 340, y: 250 },
+      style: { 
+        background: '#ffffff', 
+        border: 'none', 
+        borderRadius: '8px', 
+        color: 'black', 
+        width: 180, 
+        padding: '8px',
+      }
+    },
+    {
+      id: 'assistant-processing',
+      data: { label: <div className="flex items-center"><Bot className="w-4 h-4 mr-2 flex-shrink-0" />Assistant Processing</div> },
+      position: { x: 600, y: 250 },
+      style: { 
+        background: '#ffffff', 
+        border: 'none', 
+        borderRadius: '8px', 
+        color: 'black', 
+        width: 180, 
+        padding: '8px',
+      }
+    },
+    {
+      id: 'function-calls',
+      data: { label: <div className="flex items-center"><Zap className="w-4 h-4 mr-2 flex-shrink-0" />Function Calls</div> },
+      position: { x: 860, y: 250 },
+      style: { 
+        background: '#ffffff', 
+        border: 'none', 
+        color: 'black', 
+        borderRadius: '8px', 
+        width: 180, 
+        padding: '8px',
+      }
+    },
+    {
+      id: 'portfolio-navigation',
+      type: 'output',
+      data: { label: <div className="flex items-center"><Navigation className="w-4 h-4 mr-2 flex-shrink-0" />Portfolio Navigation</div> },
+      position: { x: 1100, y: 250 },
+      style: { 
+        background: '#ffffff', 
+        color: 'black', 
+        border: 'none', 
+        borderRadius: '8px', 
+        width: 180, 
+        padding: '8px',
+      }
+    }
+];
+
+// Edges for the flow diagram
+const initialEdges = [
+    // Main Processing Flow: A --> B --> C --> D --> E
+    { 
+      id: 'main-1', 
+      source: 'user-query', 
+      target: 'thread-management', 
+      sourcePosition: 'right',
+      targetPosition: 'left',
+      type: 'default', 
+      animated: true, 
+      style: { stroke: '#3b82f6', strokeWidth: 2 },
+      markerEnd: { type: 'arrowclosed', color: '#3b82f6' }
+    },
+    { 
+      id: 'main-2', 
+      source: 'thread-management', 
+      target: 'assistant-processing', 
+      sourcePosition: 'right',
+      targetPosition: 'left',
+      type: 'default', 
+      animated: true, 
+      style: { stroke: '#3b82f6', strokeWidth: 2 },
+      markerEnd: { type: 'arrowclosed', color: '#3b82f6' }
+    },
+    { 
+      id: 'main-3', 
+      source: 'assistant-processing', 
+      target: 'function-calls', 
+      sourcePosition: 'right',
+      targetPosition: 'left',
+      type: 'default', 
+      animated: true, 
+      style: { stroke: '#3b82f6', strokeWidth: 2 },
+      markerEnd: { type: 'arrowclosed', color: '#3b82f6' }
+    },
+    { 
+      id: 'main-4', 
+      source: 'function-calls', 
+      target: 'portfolio-navigation', 
+      sourcePosition: 'right',
+      targetPosition: 'left',
+      type: 'default', 
+      animated: true, 
+      style: { stroke: '#3b82f6', strokeWidth: 2 },
+      markerEnd: { type: 'arrowclosed', color: '#3b82f6' }
+    },
+
+    // Supporting Systems Flow: F --> G --> H --> I --> J
+    { 
+      id: 'support-1', 
+      source: 'message-storage', 
+      target: 'context-retention', 
+      sourcePosition: 'right',
+      targetPosition: 'left',
+      type: 'default', 
+      animated: true, 
+      style: { stroke: '#8b5cf6', strokeWidth: 2 },
+      markerEnd: { type: 'arrowclosed', color: '#8b5cf6' }
+    },
+    { 
+      id: 'support-2', 
+      source: 'context-retention', 
+      target: 'knowledge-retrieval', 
+      sourcePosition: 'right',
+      targetPosition: 'left',
+      type: 'default', 
+      animated: true, 
+      style: { stroke: '#8b5cf6', strokeWidth: 2 },
+      markerEnd: { type: 'arrowclosed', color: '#8b5cf6' }
+    },
+    { 
+      id: 'support-3', 
+      source: 'knowledge-retrieval', 
+      target: 'ui-updates', 
+      sourcePosition: 'right',
+      targetPosition: 'left',
+      type: 'default', 
+      animated: true, 
+      style: { stroke: '#8b5cf6', strokeWidth: 2 },
+      markerEnd: { type: 'arrowclosed', color: '#8b5cf6' }
+    },
+    { 
+      id: 'support-4', 
+      source: 'ui-updates', 
+      target: 'visual-response', 
+      sourcePosition: 'right',
+      targetPosition: 'left',
+      type: 'default', 
+      animated: true, 
+      style: { stroke: '#8b5cf6', strokeWidth: 2 },
+      markerEnd: { type: 'arrowclosed', color: '#8b5cf6' }
+    },
+    
+    // Cross-connections (dotted): A -.-> F, B -.-> G, C -.-> H, D -.-> I, E -.-> J
+    { 
+      id: 'cross-1', 
+      source: 'user-query', 
+      target: 'message-storage', 
+      sourcePosition: 'top',
+      targetPosition: 'bottom',
+      type: 'straight', 
+      animated: false, 
+      style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 },
+      markerEnd: { type: 'arrowclosed', color: '#000000' }
+    },
+    { 
+      id: 'cross-2', 
+      source: 'thread-management', 
+      target: 'context-retention', 
+      sourcePosition: 'top',
+      targetPosition: 'bottom',
+      type: 'straight', 
+      animated: false, 
+      style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 },
+      markerEnd: { type: 'arrowclosed', color: '#000000' }
+    },
+    { 
+      id: 'cross-3', 
+      source: 'assistant-processing', 
+      target: 'knowledge-retrieval', 
+      sourcePosition: 'top',
+      targetPosition: 'bottom',
+      type: 'straight', 
+      animated: false, 
+      style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 },
+      markerEnd: { type: 'arrowclosed', color: '#000000' }
+    },
+    { 
+      id: 'cross-4', 
+      source: 'function-calls', 
+      target: 'ui-updates', 
+      sourcePosition: 'top',
+      targetPosition: 'bottom',
+      type: 'straight', 
+      animated: false, 
+      style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 },
+      markerEnd: { type: 'arrowclosed', color: '#000000' }
+    },
+    { 
+      id: 'cross-5', 
+      source: 'portfolio-navigation', 
+      target: 'visual-response', 
+      sourcePosition: 'top',
+      targetPosition: 'bottom',
+      type: 'straight', 
+      animated: false, 
+      style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 },
+      markerEnd: { type: 'arrowclosed', color: '#000000' }
+    }
+];
+
+// Custom Controls component that only shows lock/unlock in development
+const CustomControls = ({ 
+  position = 'bottom-right', 
+  isLocked, 
+  setIsLocked,
+  onZoomIn,
+  onZoomOut,
+  onFitView
+}: { 
+  position?: string;
+  isLocked: boolean;
+  setIsLocked: React.Dispatch<React.SetStateAction<boolean>>;
+  onZoomIn: () => void;
+  onZoomOut: () => void;
+  onFitView: () => void;
+}) => {
+  const isDevelopment = process.env.NODE_ENV === 'development';
+
+  const getPositionClasses = () => {
+    switch(position) {
+      case 'bottom-center':
+        return 'bottom-2 left-1/2 transform -translate-x-1/2 flex-row';
+      case 'bottom-right':
+      default:
+        return 'bottom-2 right-2 flex-col';
+    }
+  };
+
+  return (
+    <div className={`absolute ${getPositionClasses()} flex gap-2 p-2`}>
+      <button
+        onClick={onZoomIn}
+        className="p-2 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50 transition-colors"
+        title="Zoom in"
+      >
+        <ZoomIn className="w-4 h-4" />
+      </button>
+      
+      <button
+        onClick={onZoomOut}
+        className="p-2 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50 transition-colors"
+        title="Zoom out"
+      >
+        <ZoomOut className="w-4 h-4" />
+      </button>
+      
+      <button
+        onClick={onFitView}
+        className="p-2 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50 transition-colors"
+        title="Fit view"
+      >
+        <RotateCcw className="w-4 h-4" />
+      </button>
+      
+      {/* Only show lock/unlock button in development */}
+      {isDevelopment && (
+        <button
+          onClick={() => {
+            console.log('Lock state changing from:', isLocked, 'to:', !isLocked);
+            setIsLocked(!isLocked);
+          }}
+          className={`p-2 border rounded-md shadow-sm transition-colors ${
+            isLocked 
+              ? 'bg-white border-gray-200 hover:bg-gray-50' 
+              : 'bg-blue-50 border-blue-300 hover:bg-blue-100'
+          }`}
+          title={isLocked ? "Unlock nodes" : "Lock nodes"}
+        >
+          {isLocked ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4" />}
+        </button>
+      )}
+    </div>
+  );
+};
+
+const TechnicalArchitectureBot = () => {
+  const [isLocked, setIsLocked] = useState(true);
+  const reactFlowRef = React.useRef<any>(null);
+
+  // Always use the same desktop layout
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  
+  // Update nodes when lock state changes
+  useEffect(() => {
+    setNodes(prevNodes => 
+      prevNodes.map(node => ({
+        ...node,
+        draggable: !isLocked
+      }))
+    );
+  }, [isLocked, setNodes]);
+  
+  const onConnect = useCallback(
+    (params: any) => setEdges((els) => addEdge(params, els)),
+    [setEdges],
+  );
+
+  // Zoom functions
+  const handleZoomIn = () => {
+    if (reactFlowRef.current) {
+      reactFlowRef.current.zoomIn();
+    }
+  };
+
+  const handleZoomOut = () => {
+    if (reactFlowRef.current) {
+      reactFlowRef.current.zoomOut();
+    }
+  };
+
+  const handleFitView = () => {
+    if (reactFlowRef.current) {
+      reactFlowRef.current.fitView();
+    }
+  };
+
+  return (
+    <div className="container px-4 md:px-6">
+      <div className="border-none">
+        <SectionHeader
+          category="PROCESS"
+          title="Assistant Processing Flow Architecture"
+          icon={Rocket}
+          description={
+            'How user queries flow through the main processing pipeline with supporting systems handling message storage, context retention, and knowledge retrieval.'
+          }
+        />
+      </div>
+      
+      <div 
+        className="flowmap-rounded-wrapper rounded-xl overflow-auto" 
+        style={{ 
+          width: '100%', 
+          height: '600px', 
+          position: 'relative', 
+          background: 'linear-gradient(rgb(228,247,245) 0%, rgb(255,240,227) 43.03%, rgb(240,246,255) 100%)' 
+        }}
+      >
+        <ReactFlow
+          ref={reactFlowRef}
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          fitView
+          fitViewOptions={{ 
+            padding: 0.1, 
+            includeHiddenNodes: false,
+            minZoom: 0.3,
+            maxZoom: 1.2
+          }}
+          minZoom={0.2}
+          maxZoom={2}
+          attributionPosition="bottom-left"
+          nodesDraggable={!isLocked}
+          nodesConnectable={false}
+          elementsSelectable={false}
+          style={{ background: 'transparent', position: 'relative', zIndex: 1, minWidth: '1500px' }}
+        >
+        </ReactFlow>
+      </div>
+    </div>
+  );
+};
+
+export default TechnicalArchitectureBot;

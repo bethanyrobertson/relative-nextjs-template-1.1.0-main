@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Lightbulb, SlidersHorizontal, SearchCheck, ReceiptText, ArrowRightLeft } from 'lucide-react';
+import { Compass, UserRound, Lightbulb, FolderSymlink, Hand } from 'lucide-react';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
@@ -8,59 +8,59 @@ import SectionHeader from '../section-header';
 
 const FEATURES = [
 {
-    title: 'Streamlined Bill Management',
-    description: 'View all billers in one place with access to manage each one',
+    title: 'Personality',
+    description: 'Custom prompt engineering for consistent brand voice',
     content: {
-      title: 'Streamlined Bill Management',
+      title: 'Personality',
       description:
-        'View all billers in one place',
+        'Custom prompt engineering for consistent brand voice',
       image: 'https://imagedelivery.net/N-MD9o_LYLdDJqNonHl96g/e63eff60-5faa-4fbc-38e5-479677698300/public',
     },
-    icon: ArrowRightLeft,
+    icon: UserRound,
   },
   {
-    title: 'Payee Search & Add',
-    description: 'Access to over 20,000 payees',
+    title: 'Portfolio Navigation',
+    description: 'Function calling for portfolio navigation and content retrieval',
     content: {
-      title: 'Search',
-      description: `20,000+ payee database with search functionality`,
+      title: 'Portfolio Navigation',
+      description: `Function calling for portfolio navigation and content retrieval`,
       image: 'https://imagedelivery.net/N-MD9o_LYLdDJqNonHl96g/57335953-791e-4270-5f3d-f8d2e9d20e00/public',
     },
-    icon: SearchCheck,
+    icon: Compass,
   },
   {
-    title: 'Payment Management',
-    description: 'Payment tracking and cancellation capabilities',
+    title: 'Communication style',
+    description: 'Conversational but concise, confident without being boastful',
     content: {
-      title: 'Cancel a Payment',
+      title: 'Communication style',
       description:
-        'Payment tracking and cancellation capabilities',
+        'Conversational but concise, confident without being boastful',
       image: 'https://imagedelivery.net/N-MD9o_LYLdDJqNonHl96g/4096553c-501f-4f1c-d5e0-17efb147c600/public',
     },
-    icon: ReceiptText,
+    icon: Hand,
   },
   {
-    title: 'Filtering',
-    description: 'Integrated payment history with filtering and sorting options',
+    title: 'Response Structure',
+    description: 'Always includes actionable next steps or relevant portfolio links',
     content: {
-      title: 'Filtering',
+      title: 'Response Structure',
       description:
-        'Integrated payment history with filtering and sorting options',
+        'Always includes actionable next steps or relevant portfolio links',
       image: 'https://imagedelivery.net/N-MD9o_LYLdDJqNonHl96g/b6810587-baea-415e-c426-0f4097993900/public',
     },
-    icon: SlidersHorizontal,
+    icon: FolderSymlink,
   },
 ];
 
-export const BillPayDex = () => {
+export const OpenAIBot = () => {
   return (
     <section id="billpay" className="py-16 md:py-28 lg:py-32">
       <div className="container">
         <SectionHeader
             category="SOLUTION"
-            title="Bill Pay Solution with Flexible Payment Processing Across 20,000+ Payees"
+            title="Custom Prompt Engineering for Consistent Brand Voice"
             icon={Lightbulb}
-            description="DEX cardholders can pay bills using their Direct Express card through the mobile app or website"
+            description="The OpenAI integration uses dynamic prompt engineering to automatically adapt the AI's personality, vocabulary, and response depth based on detected user types (recruiters, hiring managers, or fellow designers), while maintaining consistent brand voice through predefined templates and regular tone monitoring. "
             className="border-none"
         />
         <Tabs

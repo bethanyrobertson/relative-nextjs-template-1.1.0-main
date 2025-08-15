@@ -1,17 +1,5 @@
-import Accelerate from '@/components/sections/accelerate-mucinex';
-import Adaptive from '@/components/sections/adaptive';
-import Features from '@/components/sections/features';
-import Hero from '@/components/sections/hero-mucinex';
-import Optimize from '@/components/sections/optimize-mucinex';
+import { redirect } from 'next/navigation';
 
-export default function Home() {
-  return (
-    <>
-      <Hero />
-      <Features />
-      <Adaptive />
-      <Optimize />
-      <Accelerate />
-    </>
-  );
+export default function RootPage() {
+  redirect('/home');
 }

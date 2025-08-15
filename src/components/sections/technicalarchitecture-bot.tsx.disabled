@@ -1,0 +1,834 @@
+'use client';
+
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+  Background,
+  ReactFlow,
+  useNodesState,
+  useEdgesState,
+  addEdge,
+  Position,
+  Controls,
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
+import { Lock, Unlock, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+
+import {
+    Blocks,
+    MessageSquare,
+    Settings,
+    Bot,
+    Zap,
+    Navigation,
+    Database,
+    Brain,
+    Search,
+    RefreshCw,
+    Eye
+  } from 'lucide-react';
+
+// Mock SectionHeader component
+const SectionHeader = ({ category, title, icon: Icon, description, className }: any) => (
+  <div className={`mb-4 md:mb-6 ${className}`}>
+    <div className="flex items-center mb-2">
+      <span className="text-xs md:text-sm font-medium text-gray-500 mr-4">{category}</span>
+    </div>
+    <div className="flex items-center mb-2">
+      <Icon className="w-5 h-5 md:w-6 md:h-6 mr-2 md:mr-3 text-gray-700 flex-shrink-0" />
+      <h2 className="text-lg md:text-2xl font-bold text-gray-900 leading-tight">{title}</h2>
+    </div>
+    <p className="text-sm md:text-base text-gray-600 max-w-3xl">{description}</p>
+  </div>
+);
+
+const initialNodes = [
+    // Background containers for grouping - Supporting Systems on top, Main Flow on bottom
+    {
+      id: 'supporting-bg',
+      data: { label: <div className="text-sm font-mono text-black font-medium">Supporting Systems</div> },
+      position: { x: 80, y: 30 },
+      style: { 
+        background: 'rgba(139, 92, 246, 0.1)', 
+        border: '1px solid rgba(139, 92, 246, 0.3)', 
+        borderRadius: '12px', 
+        width: 1160, 
+        height: 100,
+        zIndex: -1,
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        paddingTop: '8px',
+        paddingLeft: '16px'
+      },
+      draggable: false,
+      selectable: false
+    },
+    {
+      id: 'main-flow-bg',
+      data: { label: <div className="text-sm font-mono text-black font-medium">Main Processing Flow</div> },
+      position: { x: 80, y: 200 },
+      style: { 
+        background: 'rgba(59, 130, 246, 0.1)', 
+        border: '1px solid rgba(59, 130, 246, 0.3)', 
+        borderRadius: '12px', 
+        width: 1160, 
+        height: 100,
+        zIndex: -1,
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        paddingTop: '8px',
+        paddingLeft: '16px'
+      },
+      draggable: false,
+      selectable: false
+    },
+    
+    // Group Labels - Removed (now in background containers)
+    
+    // Supporting Systems - Top Row (offset positions)
+    {
+      id: 'message-storage',
+      data: { label: <div className="flex items-center"><Database className="w-4 h-4 mr-2 flex-shrink-0" />Message Storage</div> },
+      position: { x: 120, y: 50 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #8b5cf6', 
+        borderRadius: '6px', 
+        fontSize: '12px', 
+        width: 180, 
+        padding: '6px',
+        boxShadow: '0 2px 4px rgba(139, 92, 246, 0.2)'
+      }
+    },
+    {
+      id: 'context-retention',
+      data: { label: <div className="flex items-center"><Brain className="w-4 h-4 mr-2 flex-shrink-0" />Context Retention</div> },
+      position: { x: 380, y: 50 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #8b5cf6', 
+        borderRadius: '6px', 
+        fontSize: '12px', 
+        width: 200, 
+        padding: '6px',
+        boxShadow: '0 2px 4px rgba(139, 92, 246, 0.2)'
+      }
+    },
+    {
+      id: 'knowledge-retrieval',
+      data: { label: <div className="flex items-center"><Search className="w-4 h-4 mr-2 flex-shrink-0" />Knowledge Retrieval</div> },
+      position: { x: 640, y: 50 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #ec4899', 
+        borderRadius: '6px', 
+        fontSize: '12px', 
+        width: 200, 
+        padding: '6px',
+        boxShadow: '0 2px 4px rgba(236, 72, 153, 0.2)'
+      }
+    },
+    {
+      id: 'ui-updates',
+      data: { label: <div className="flex items-center"><RefreshCw className="w-4 h-4 mr-2 flex-shrink-0" />UI Updates</div> },
+      position: { x: 900, y: 50 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #8b5cf6', 
+        borderRadius: '6px', 
+        fontSize: '12px', 
+        width: 180, 
+        padding: '6px',
+        boxShadow: '0 2px 4px rgba(139, 92, 246, 0.2)'
+      }
+    },
+    {
+      id: 'visual-response',
+      data: { label: <div className="flex items-center"><Eye className="w-4 h-4 mr-2 flex-shrink-0" />Visual Response</div> },
+      position: { x: 1140, y: 50 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #22c55e', 
+        borderRadius: '6px', 
+        fontSize: '12px', 
+        width: 200, 
+        padding: '6px',
+        boxShadow: '0 2px 4px rgba(34, 197, 94, 0.2)'
+      }
+    },
+    
+    // Main Processing Flow - Bottom Row (offset positions, not aligned with top)
+    {
+      id: 'user-query',
+      type: 'input',
+      data: { label: <div className="flex items-center"><MessageSquare className="w-4 h-4 mr-2 flex-shrink-0" />User Query</div> },
+      position: { x: 100, y: 220 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #3b82f6', 
+        borderRadius: '8px', 
+        width: 180, 
+        padding: '8px',
+        boxShadow: '0 2px 4px rgba(59, 130, 246, 0.2)'
+      }
+    },
+    {
+      id: 'thread-management',
+      data: { label: <div className="flex items-center"><Settings className="w-4 h-4 mr-2 flex-shrink-0" />Thread Management</div> },
+      position: { x: 340, y: 220 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #3b82f6', 
+        borderRadius: '8px', 
+        width: 200, 
+        padding: '8px',
+        boxShadow: '0 2px 4px rgba(59, 130, 246, 0.2)'
+      }
+    },
+    {
+      id: 'assistant-processing',
+      data: { label: <div className="flex items-center"><Bot className="w-4 h-4 mr-2 flex-shrink-0" />Assistant Processing</div> },
+      position: { x: 600, y: 220 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #f59e0b', 
+        borderRadius: '8px', 
+        width: 200, 
+        padding: '8px',
+        boxShadow: '0 2px 4px rgba(245, 158, 11, 0.2)'
+      }
+    },
+    {
+      id: 'function-calls',
+      data: { label: <div className="flex items-center"><Zap className="w-4 h-4 mr-2 flex-shrink-0" />Function Calls</div> },
+      position: { x: 860, y: 220 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #3b82f6', 
+        borderRadius: '8px', 
+        width: 180, 
+        padding: '8px',
+        boxShadow: '0 2px 4px rgba(59, 130, 246, 0.2)'
+      }
+    },
+    {
+      id: 'portfolio-navigation',
+      type: 'output',
+      data: { label: <div className="flex items-center"><Navigation className="w-4 h-4 mr-2 flex-shrink-0" />Portfolio Navigation</div> },
+      position: { x: 1100, y: 220 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #22c55e', 
+        borderRadius: '8px', 
+        width: 200, 
+        padding: '8px',
+        boxShadow: '0 2px 4px rgba(34, 197, 94, 0.2)'
+      }
+    }
+];
+  
+const initialEdges = [
+    // Supporting Systems Flow (top row - solid purple arrows)
+    { 
+      id: 'support-1', 
+      source: 'message-storage', 
+      target: 'context-retention', 
+      type: 'smoothstep', 
+      animated: true, 
+      style: { stroke: '#8b5cf6', strokeWidth: 3 },
+      markerEnd: { type: 'arrowclosed' as const, color: '#8b5cf6' }
+    },
+    { 
+      id: 'support-2', 
+      source: 'context-retention', 
+      target: 'knowledge-retrieval', 
+      type: 'smoothstep', 
+      animated: true, 
+      style: { stroke: '#8b5cf6', strokeWidth: 3 },
+      markerEnd: { type: 'arrowclosed' as const, color: '#8b5cf6' }
+    },
+    { 
+      id: 'support-3', 
+      source: 'knowledge-retrieval', 
+      target: 'ui-updates', 
+      type: 'smoothstep', 
+      animated: true, 
+      style: { stroke: '#8b5cf6', strokeWidth: 3 },
+      markerEnd: { type: 'arrowclosed' as const, color: '#8b5cf6' }
+    },
+    { 
+      id: 'support-4', 
+      source: 'ui-updates', 
+      target: 'visual-response', 
+      type: 'smoothstep', 
+      animated: true, 
+      style: { stroke: '#8b5cf6', strokeWidth: 3 },
+      markerEnd: { type: 'arrowclosed', color: '#8b5cf6' }
+    },
+
+    // Main Processing Flow (bottom row - solid blue arrows)
+    { 
+      id: 'main-1', 
+      source: 'user-query', 
+      target: 'thread-management', 
+      type: 'smoothstep', 
+      animated: true, 
+      style: { stroke: '#3b82f6', strokeWidth: 3 },
+      markerEnd: { type: 'arrowclosed', color: '#3b82f6' }
+    },
+    { 
+      id: 'main-2', 
+      source: 'thread-management', 
+      target: 'assistant-processing', 
+      type: 'smoothstep', 
+      animated: true, 
+      style: { stroke: '#3b82f6', strokeWidth: 3 },
+      markerEnd: { type: 'arrowclosed', color: '#3b82f6' }
+    },
+    { 
+      id: 'main-3', 
+      source: 'assistant-processing', 
+      target: 'function-calls', 
+      type: 'smoothstep', 
+      animated: true, 
+      style: { stroke: '#3b82f6', strokeWidth: 3 },
+      markerEnd: { type: 'arrowclosed', color: '#3b82f6' }
+    },
+    { 
+      id: 'main-4', 
+      source: 'function-calls', 
+      target: 'portfolio-navigation', 
+      type: 'smoothstep', 
+      animated: true, 
+      style: { stroke: '#3b82f6', strokeWidth: 3 },
+      markerEnd: { type: 'arrowclosed', color: '#3b82f6' }
+    },
+    
+    // Cross-connections - Diagonal dotted arrows from bottom to top
+    { 
+      id: 'cross-1', 
+      source: 'user-query', 
+      target: 'message-storage', 
+      type: 'straight', 
+      animated: false, 
+      style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 },
+      markerEnd: { type: 'arrowclosed', color: '#000000' }
+    },
+    { 
+      id: 'cross-2', 
+      source: 'thread-management', 
+      target: 'context-retention', 
+      type: 'straight', 
+      animated: false, 
+      style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 },
+      markerEnd: { type: 'arrowclosed', color: '#000000' }
+    },
+    { 
+      id: 'cross-3', 
+      source: 'assistant-processing', 
+      target: 'knowledge-retrieval', 
+      type: 'straight', 
+      animated: false, 
+      style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 },
+      markerEnd: { type: 'arrowclosed', color: '#000000' }
+    },
+    { 
+      id: 'cross-4', 
+      source: 'function-calls', 
+      target: 'ui-updates', 
+      type: 'straight', 
+      animated: false, 
+      style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 },
+      markerEnd: { type: 'arrowclosed', color: '#000000' }
+    },
+    { 
+      id: 'cross-5', 
+      source: 'portfolio-navigation', 
+      target: 'visual-response', 
+      type: 'straight', 
+      animated: false, 
+      style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 },
+      markerEnd: { type: 'arrowclosed', color: '#000000' }
+    }
+];
+
+// Custom Controls component that only shows lock/unlock in development
+const CustomControls = ({ 
+  position = 'bottom-right', 
+  isLocked, 
+  setIsLocked,
+  onZoomIn,
+  onZoomOut,
+  onFitView
+}: { 
+  position?: string;
+  isLocked: boolean;
+  setIsLocked: React.Dispatch<React.SetStateAction<boolean>>;
+  onZoomIn: () => void;
+  onZoomOut: () => void;
+  onFitView: () => void;
+}) => {
+  const isDevelopment = process.env.NODE_ENV === 'development';
+
+  const getPositionClasses = () => {
+    switch(position) {
+      case 'bottom-center':
+        return 'bottom-2 left-1/2 transform -translate-x-1/2 flex-row';
+      case 'bottom-right':
+      default:
+        return 'bottom-2 right-2 flex-col';
+    }
+  };
+
+  return (
+    <div className={`absolute ${getPositionClasses()} flex gap-2 p-2`}>
+      <button
+        onClick={onZoomIn}
+        className="p-2 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50 transition-colors"
+        title="Zoom in"
+      >
+        <ZoomIn className="w-4 h-4" />
+      </button>
+      
+      <button
+        onClick={onZoomOut}
+        className="p-2 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50 transition-colors"
+        title="Zoom out"
+      >
+        <ZoomOut className="w-4 h-4" />
+      </button>
+      
+      <button
+        onClick={onFitView}
+        className="p-2 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50 transition-colors"
+        title="Fit view"
+      >
+        <RotateCcw className="w-4 h-4" />
+      </button>
+      
+      {/* Only show lock/unlock button in development */}
+      {isDevelopment && (
+        <button
+          onClick={() => {
+            console.log('Lock state changing from:', isLocked, 'to:', !isLocked);
+            setIsLocked(!isLocked);
+          }}
+          className={`p-2 border rounded-md shadow-sm transition-colors ${
+            isLocked 
+              ? 'bg-white border-gray-200 hover:bg-gray-50' 
+              : 'bg-blue-50 border-blue-300 hover:bg-blue-100'
+          }`}
+          title={isLocked ? "Unlock nodes" : "Lock nodes"}
+        >
+          {isLocked ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4" />}
+        </button>
+      )}
+    </div>
+  );
+};
+
+const TechnicalArchitectureBot = () => {
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [isLocked, setIsLocked] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const reactFlowRef = React.useRef<any>(null);
+
+  // Mobile and tablet detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Mobile-specific nodes layout - Ultra compact for small screens
+  const mobileNodes = [
+    // Background containers for mobile grouping - Supporting on top, Main on bottom
+    {
+      id: 'supporting-bg-mobile',
+      data: { label: '' },
+      position: { x: 20, y: 30 },
+      style: { 
+        background: 'rgba(139, 92, 246, 0.1)', 
+        border: '1px solid rgba(139, 92, 246, 0.3)', 
+        borderRadius: '12px', 
+        width: 250, 
+        height: 120,
+        zIndex: -1
+      },
+      draggable: false,
+      selectable: false
+    },
+    {
+      id: 'main-flow-bg-mobile',
+      data: { label: '' },
+      position: { x: 20, y: 180 },
+      style: { 
+        background: 'rgba(59, 130, 246, 0.1)', 
+        border: '1px solid rgba(59, 130, 246, 0.3)', 
+        borderRadius: '12px', 
+        width: 250, 
+        height: 120,
+        zIndex: -1
+      },
+      draggable: false,
+      selectable: false
+    },
+    
+    // Group Labels for mobile
+    {
+      id: 'supporting-label-mobile',
+      data: { label: <div className="text-xs font-bold text-purple-700 bg-purple-50 px-2 py-1 rounded-md border border-purple-200">Supporting Systems</div> },
+      position: { x: 40, y: 5 },
+      style: { background: 'transparent', border: 'none' },
+      draggable: false,
+      selectable: false
+    },
+    {
+      id: 'main-flow-label-mobile',
+      data: { label: <div className="text-xs font-bold text-blue-700 bg-blue-50 px-2 py-1 rounded-md border border-blue-200">Main Processing Flow</div> },
+      position: { x: 40, y: 195 },
+      style: { background: 'transparent', border: 'none' },
+      draggable: false,
+      selectable: false
+    },
+    
+    // Supporting Systems - Top area (ultra compact layout)
+    {
+      id: 'message-storage',
+      data: { label: <div className="flex items-center"><Database className="w-3 h-3 mr-1 flex-shrink-0" />Storage</div> },
+      position: { x: 40, y: 50 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #8b5cf6', 
+        borderRadius: '6px', 
+        fontSize: '10px', 
+        width: 80, 
+        padding: '3px',
+        boxShadow: '0 2px 4px rgba(139, 92, 246, 0.2)'
+      }
+    },
+    {
+      id: 'context-retention',
+      data: { label: <div className="flex items-center"><Brain className="w-3 h-3 mr-1 flex-shrink-0" />Context</div> },
+      position: { x: 140, y: 50 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #8b5cf6', 
+        borderRadius: '6px', 
+        fontSize: '10px', 
+        width: 80, 
+        padding: '3px',
+        boxShadow: '0 2px 4px rgba(139, 92, 246, 0.2)'
+      }
+    },
+    {
+      id: 'knowledge-retrieval',
+      data: { label: <div className="flex items-center"><Search className="w-3 h-3 mr-1 flex-shrink-0" />Knowledge</div> },
+      position: { x: 240, y: 50 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #ec4899', 
+        borderRadius: '6px', 
+        fontSize: '10px', 
+        width: 90, 
+        padding: '3px',
+        boxShadow: '0 2px 4px rgba(236, 72, 153, 0.2)'
+      }
+    },
+    {
+      id: 'ui-updates',
+      data: { label: <div className="flex items-center"><RefreshCw className="w-3 h-3 mr-1 flex-shrink-0" />UI Updates</div> },
+      position: { x: 350, y: 50 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #8b5cf6', 
+        borderRadius: '6px', 
+        fontSize: '10px', 
+        width: 90, 
+        padding: '3px',
+        boxShadow: '0 2px 4px rgba(139, 92, 246, 0.2)'
+      }
+    },
+    {
+      id: 'visual-response',
+      data: { label: <div className="flex items-center"><Eye className="w-3 h-3 mr-1 flex-shrink-0" />Visual Resp</div> },
+      position: { x: 240, y: 90 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #22c55e', 
+        borderRadius: '6px', 
+        fontSize: '10px', 
+        width: 90, 
+        padding: '3px',
+        boxShadow: '0 2px 4px rgba(34, 197, 94, 0.2)'
+      }
+    },
+    
+    // Main Processing Flow - Bottom area (ultra compact layout)
+    {
+      id: 'user-query',
+      type: 'input',
+      data: { label: <div className="flex items-center"><MessageSquare className="w-3 h-3 mr-1 flex-shrink-0" />User Query</div> },
+      position: { x: 40, y: 200 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #3b82f6', 
+        borderRadius: '8px', 
+        width: 90, 
+        padding: '4px', 
+        fontSize: '10px',
+        boxShadow: '0 2px 4px rgba(59, 130, 246, 0.2)'
+      }
+    },
+    {
+      id: 'thread-management',
+      data: { label: <div className="flex items-center"><Settings className="w-3 h-3 mr-1 flex-shrink-0" />Thread Mgmt</div> },
+      position: { x: 150, y: 200 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #3b82f6', 
+        borderRadius: '8px', 
+        width: 100, 
+        padding: '4px', 
+        fontSize: '10px',
+        boxShadow: '0 2px 4px rgba(59, 130, 246, 0.2)'
+      }
+    },
+    {
+      id: 'assistant-processing',
+      data: { label: <div className="flex items-center"><Bot className="w-3 h-3 mr-1 flex-shrink-0" />AI Processing</div> },
+      position: { x: 270, y: 200 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #f59e0b', 
+        borderRadius: '8px', 
+        width: 100, 
+        padding: '4px', 
+        fontSize: '10px',
+        boxShadow: '0 2px 4px rgba(245, 158, 11, 0.2)'
+      }
+    },
+    {
+      id: 'function-calls',
+      data: { label: <div className="flex items-center"><Zap className="w-3 h-3 mr-1 flex-shrink-0" />Function Calls</div> },
+      position: { x: 390, y: 200 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #3b82f6', 
+        borderRadius: '8px', 
+        width: 100, 
+        padding: '4px', 
+        fontSize: '10px',
+        boxShadow: '0 2px 4px rgba(59, 130, 246, 0.2)'
+      }
+    },
+    {
+      id: 'portfolio-navigation',
+      type: 'output',
+      data: { label: <div className="flex items-center"><Navigation className="w-3 h-3 mr-1 flex-shrink-0" />Portfolio Nav</div> },
+      position: { x: 270, y: 250 },
+      style: { 
+        background: '#ffffff', 
+        border: '1px solid #22c55e', 
+        borderRadius: '8px', 
+        width: 100, 
+        padding: '4px', 
+        fontSize: '10px',
+        boxShadow: '0 2px 4px rgba(34, 197, 94, 0.2)'
+      }
+    }
+  ];
+
+  // Mobile-specific edges
+  const mobileEdges = [
+    // Supporting Systems Flow - Top area (solid purple arrows)
+    { id: 'support-1', source: 'message-storage', target: 'context-retention', type: 'smoothstep', animated: true, style: { stroke: '#8b5cf6', strokeWidth: 3 }, markerEnd: { type: 'arrowclosed', color: '#8b5cf6' } },
+    { id: 'support-2', source: 'context-retention', target: 'knowledge-retrieval', type: 'smoothstep', animated: true, style: { stroke: '#8b5cf6', strokeWidth: 3 }, markerEnd: { type: 'arrowclosed', color: '#8b5cf6' } },
+    { id: 'support-3', source: 'knowledge-retrieval', target: 'ui-updates', type: 'smoothstep', animated: true, style: { stroke: '#8b5cf6', strokeWidth: 3 }, markerEnd: { type: 'arrowclosed', color: '#8b5cf6' } },
+    { id: 'support-4', source: 'ui-updates', target: 'visual-response', type: 'smoothstep', animated: true, style: { stroke: '#8b5cf6', strokeWidth: 3 }, markerEnd: { type: 'arrowclosed', color: '#8b5cf6' } },
+    
+    // Main Processing Flow - Bottom area (solid blue arrows)
+    { id: 'main-1', source: 'user-query', target: 'thread-management', type: 'smoothstep', animated: true, style: { stroke: '#3b82f6', strokeWidth: 3 }, markerEnd: { type: 'arrowclosed', color: '#3b82f6' } },
+    { id: 'main-2', source: 'thread-management', target: 'assistant-processing', type: 'smoothstep', animated: true, style: { stroke: '#3b82f6', strokeWidth: 3 }, markerEnd: { type: 'arrowclosed', color: '#3b82f6' } },
+    { id: 'main-3', source: 'assistant-processing', target: 'function-calls', type: 'smoothstep', animated: true, style: { stroke: '#3b82f6', strokeWidth: 3 }, markerEnd: { type: 'arrowclosed', color: '#3b82f6' } },
+    { id: 'main-4', source: 'function-calls', target: 'portfolio-navigation', type: 'smoothstep', animated: true, style: { stroke: '#3b82f6', strokeWidth: 3 }, markerEnd: { type: 'arrowclosed', color: '#3b82f6' } },
+    
+    // Cross-connections - Diagonal connections from bottom to top (dotted gray arrows)
+    { id: 'cross-1', source: 'user-query', target: 'message-storage', type: 'straight', animated: false, style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 }, markerEnd: { type: 'arrowclosed', color: '#000000' } },
+    { id: 'cross-2', source: 'thread-management', target: 'context-retention', type: 'straight', animated: false, style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 }, markerEnd: { type: 'arrowclosed', color: '#000000' } },
+    { id: 'cross-3', source: 'assistant-processing', target: 'knowledge-retrieval', type: 'straight', animated: false, style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 }, markerEnd: { type: 'arrowclosed', color: '#000000' } },
+    { id: 'cross-4', source: 'function-calls', target: 'ui-updates', type: 'straight', animated: false, style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 }, markerEnd: { type: 'arrowclosed', color: '#000000' } },
+    { id: 'cross-5', source: 'portfolio-navigation', target: 'visual-response', type: 'straight', animated: false, style: { strokeDasharray: '5,3', stroke: '#000000', strokeWidth: 1 }, markerEnd: { type: 'arrowclosed', color: '#000000' } }
+  ];
+  
+  // Force refresh when component mounts or mobile state changes
+  useEffect(() => {
+    const nodesToUse = isMobile ? mobileNodes : initialNodes;
+    const edgesToUse = isMobile ? mobileEdges : initialEdges;
+    setNodes(nodesToUse);
+    setEdges(edgesToUse);
+  }, [setNodes, setEdges, isMobile]);
+  
+  // Center view on mobile by default and enable mobile scrolling
+  useEffect(() => {
+    const handleResize = () => {
+      if (reactFlowRef.current) {
+        if (window.innerWidth < 1024) {
+          // On mobile/tablet, force fit view to show all content
+          setTimeout(() => {
+            const reactFlowInstance = reactFlowRef.current;
+            if (reactFlowInstance) {
+              // Force fit view to show everything with more padding
+              reactFlowInstance.fitView({
+                padding: 0.3,
+                includeHiddenNodes: false,
+                minZoom: 0.2,
+                maxZoom: 1.2
+              });
+              
+              // Debug: log the viewport after fitView
+              console.log('Mobile/Tablet fitView applied, viewport:', reactFlowInstance.getViewport());
+              
+              // Debug: log the viewport after fitView
+              console.log('Mobile/Tablet fitView applied, viewport:', reactFlowInstance.getViewport());
+            }
+          }, 200);
+        } else {
+          // On desktop, force fit view to show all content
+          setTimeout(() => {
+            const reactFlowInstance = reactFlowRef.current;
+            if (reactFlowInstance) {
+              // Force fit view to show everything with more padding
+              reactFlowInstance.fitView({
+                padding: 0.3,
+                includeHiddenNodes: false,
+                minZoom: 0.2,
+                maxZoom: 1.2
+              });
+              
+              // Debug: log the viewport after fitView
+              console.log('Desktop fitView applied, viewport:', reactFlowInstance.getViewport());
+              
+              // Debug: log the viewport after fitView
+              console.log('Desktop fitView applied, viewport:', reactFlowInstance.getViewport());
+            }
+          }, 200);
+        }
+      }
+    };
+    
+    // Initial centering
+    handleResize();
+    
+    // Listen for resize events
+    window.addEventListener('resize', handleResize);
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  // Update nodes when lock state changes
+  useEffect(() => {
+    setNodes(prevNodes => 
+      prevNodes.map(node => ({
+        ...node,
+        draggable: !isLocked
+      }))
+    );
+  }, [isLocked, setNodes]);
+  
+  const onConnect = useCallback(
+    (params: any) => setEdges((els) => addEdge(params, els)),
+    [setEdges],
+  );
+
+  // Zoom functions
+  const handleZoomIn = () => {
+    if (reactFlowRef.current) {
+      reactFlowRef.current.zoomIn();
+    }
+  };
+
+  const handleZoomOut = () => {
+    if (reactFlowRef.current) {
+      reactFlowRef.current.zoomOut();
+    }
+  };
+
+  const handleFitView = () => {
+    if (reactFlowRef.current) {
+      reactFlowRef.current.fitView();
+    }
+  };
+
+  return (
+    <div className="w-full px-4 md:px-6">
+        <SectionHeader
+            category="PROCESS"
+            title="Assistant Processing Flow Architecture"
+            icon={Blocks}
+            description="How user queries flow through the main processing pipeline with supporting systems handling message storage, context retention, and knowledge retrieval."
+            className="border-none"
+        />
+      
+              <div className="flowmap-rounded-wrapper rounded-xl overflow-x-auto overflow-y-hidden" style={{ width: '100%', height: isMobile ? '400px' : '600px', position: 'relative', background: 'linear-gradient(rgb(228,247,245) 0%, rgb(255,240,227) 43.03%, rgb(240,246,255) 100%)', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', minWidth: isMobile ? '350px' : '1400px' }}>
+        
+        {/* Debug info */}
+        <div className="absolute top-2 left-2 bg-yellow-200 text-xs p-1 rounded z-10">
+          Container: {isMobile ? 'Mobile/Tablet' : 'Desktop'} | Width: {isMobile ? '100% (min: 450px)' : '1400px'} | Screen: {typeof window !== 'undefined' ? window.innerWidth + 'px' : 'N/A'}
+        </div>
+        
+        <ReactFlow
+          ref={reactFlowRef}
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          minZoom={0.3}
+          maxZoom={2}
+          attributionPosition="bottom-left"
+          nodesDraggable={!isLocked}
+          nodesConnectable={false}
+          elementsSelectable={false}
+          panOnDrag={isMobile}
+          zoomOnScroll={isMobile}
+          zoomOnPinch={isMobile}
+          zoomOnDoubleClick={false}
+          style={{ background: 'transparent', position: 'relative', zIndex: 1, minWidth: isMobile ? '350px' : '1400px' }}
+        >
+          <CustomControls 
+            position={isMobile ? "bottom-center" : "bottom-right"}
+            isLocked={isLocked} 
+            setIsLocked={setIsLocked}
+            onZoomIn={handleZoomIn}
+            onZoomOut={handleZoomOut}
+            onFitView={handleFitView}
+          />
+        </ReactFlow>
+      </div>
+      
+      <div className="mt-4 flex justify-center gap-6 text-sm flex-wrap">
+        <div className="flex items-center">
+          <div className="w-6 h-1 bg-blue-500 mr-2 rounded"></div>
+          <span>Main Processing Flow</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-6 h-1 bg-purple-500 mr-2 rounded"></div>
+          <span>Supporting Systems</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-6 h-1 border-t border-black border-dashed mr-2"></div>
+          <span>Cross-layer Connections</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TechnicalArchitectureBot;

@@ -7,22 +7,40 @@ import { DevsCloud } from "@/components/sections/devs-cloud";
 import { NodesCloud } from "@/components/sections/nodes-cloud";
 import PersonasCloud from "@/components/sections/personas-cloud";
 import { CaseStudyCarousel } from "@/components/sections/casestudycarousel";
-import { SubNav } from "@/components/ui/subnav";
+import FloatingNavCloud from "@/components/floatingnav-cloud";
+
 
 export default function Cloud() {
   return (
-    <div className="bg-[#fafafa] min-h-screen dark:bg-slate-900">
-      <SubNav />
-      <HeroCloud />
-      <PersonasCloud />
-      <ProcessCloud />
-      <CloudIllustration />
-      <NextStepsCloud />
-      <TechnicalFeaturesCloud />
-      <DevsCloud />
-      <NodesCloud />
-      <CaseStudyCarousel />
-    </div>
+      <div>
+          <FloatingNavCloud />
+          
+          <div className="container">
+              <section id="outcome" className="min-h-screen">
+                <HeroCloud />
+              </section>
+              
+              <section id="background" className="min-h-screen">
+              <PersonasCloud />
+              </section>
+              
+              <section id="process" className="min-h-screen">
+               <ProcessCloud />
+              </section>
+              
+              <section id="solution" className="min-h-screen">
+                <CloudIllustration />
+                <TechnicalFeaturesCloud />
+                <DevsCloud />
+                <NodesCloud />
+              </section>
+              
+              <section id="nextsteps" className="min-h-screen">
+               <NextStepsCloud />
+              </section>
+          </div>
+          
+          <CaseStudyCarousel />
+      </div>
   );
 }
-

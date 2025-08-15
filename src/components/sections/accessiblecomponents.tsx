@@ -84,28 +84,36 @@ export const AccessibleComponents = () => {
           description="This feature transforms the current disjointed ATM search experience into a comprehensive, mobile-friendly solution that helps cardholders efficiently find in-network, surcharge-free ATMs using Mastercard Services data with enhanced UX/UI and integrated navigation support."
           className="border-none"
         />
-        <Tabs
+                <Tabs
           defaultValue={FEATURES[0].title}
           orientation="vertical"
           className="mt-8 flex gap-4 max-lg:flex-col-reverse border rounded-xl p-4 md:mt-8 md:p-6 lg:mt-10 lg:p-8"
         >
-          <TabsList className="flex h-auto justify-start overflow-x-auto rounded-xl bg-[#f5f5f5] dark:bg-[#002226] p-1.5 lg:basis-1/4 lg:flex-col">
+          <TabsList className="flex h-auto justify-start overflow-x-auto rounded-xl p-1.5 lg:basis-1/4 lg:flex-col tabs-list-override" style={{ 
+            backgroundColor: 'rgb(234 242 241)'
+          }}>
             {FEATURES.map((feature) => (
-              <TabsTrigger
-                key={feature.title}
-                value={feature.title}
-                className="w-full min-w-[200px] flex-1 justify-start rounded-lg px-4 py-3 text-start whitespace-normal text-muted-foreground transition-colors duration-300 
-                    data-[state=active]:bg-white data-[state=active]:text-foreground data-[state=active]:shadow-md
-                    lg:px-6 lg:py-4 dark:text-gray-300 dark:data-[state=active]:bg-[#EFF3F2] dark:data-[state=active]:text-[#001D21]"
-              >
-                <div>
-                  <feature.icon className="size-7 md:size-8 lg:size-9 text-inherit" />
-                  <h3 className="mt-3 font-mono font-bold text-inherit">{feature.title}</h3>
-                  <p className="mt-1 text-sm text-inherit opacity-80">
-                    {feature.description}
-                  </p>
-                </div>
-              </TabsTrigger>
+                <TabsTrigger
+                    key={feature.title}
+                    value={feature.title}
+                    className="w-full min-w-[200px] flex-1 justify-start rounded-lg px-4 py-3 text-start whitespace-normal transition-colors duration-300 
+                    data-[state=active]:bg-white data-[state=active]:shadow-md
+                    lg:px-6 lg:py-4"
+                    style={{
+                      color: 'slate-400', // Blue for inactive
+                      '--tw-text-opacity': '1'
+                    } as React.CSSProperties}
+                    data-inactive-color="rgb(59 130 246)"
+                    data-active-color="rgb(0 0 0)"
+                >
+                    <div>
+                        <feature.icon className="size-7 md:size-8 lg:size-9 text-inherit" />
+                        <h3 className="mt-3 font-mono font-bold text-inherit">{feature.title}</h3>
+                        <p className="mt-1 text-sm font-sans text-inherit opacity-80">
+                        {feature.description}
+                        </p>
+                    </div>
+                </TabsTrigger>
             ))}
           </TabsList>
 

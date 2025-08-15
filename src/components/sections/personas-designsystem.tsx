@@ -30,9 +30,9 @@ const PersonasDesignSystem = () => {
     <section className="container py-20">
       <SectionHeader
         category="RESEARCH & DISCOVERY"
-        title="User-Centric Design"
+        title="Eliminating the communication gaps between design and development teams "
         icon={Search}
-        description="The Design Token Manager eliminates the communication gaps between design and development teams by providing a single source of truth that automates token synchronization and creates a shared language for design decisions. This unified approach transforms fragmented workflows into seamless collaboration, ensuring design system consistency across all team members and their tools."
+        description="The Design Token Manager provides a single source of truth that automates token synchronization and creates a shared language for design decisions. This unified approach transforms fragmented workflows into seamless collaboration, ensuring design system consistency across all team members and their tools."
         className="border-none"
       />
 

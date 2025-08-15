@@ -55,7 +55,7 @@ export const useSecureChat = (options: UseSecureChatOptions = {}): ChatContextTy
     {
       id: '1',
       role: 'assistant',
-      content: "Hi! I'm Bethany's AI assistant. I can help you explore her case studies, download her resume, or learn more about her background. What would you like to know?",
+      content: "Hi! I'm Bethany. What would you like to know?",
       timestamp: new Date(),
       mode: 'default'
     }
@@ -412,48 +412,48 @@ export const useQuickActions = () => {
   const quickActions = [
     {
       id: 'case-studies-projects',
-      text: "Show me Bethany's best projects",
-      message: "[Case Studies: Show me Bethany's most impactful projects and the results she achieved]",
+      text: "Show me yourwork",
+      message: "[Case Studies: Show me your most impactful projects and the results you achieved]",
       mode: 'casestudies' as ChatMode,
       category: 'casestudies' as const,
       description: "Explore case studies and design work"
     },
     {
       id: 'case-studies-process',
-      text: "What's Bethany's design process?",
-      message: "[Case Studies: Walk me through Bethany's design process and methodology]",
+      text: "What's your design process?",
+      message: "[Case Studies: Walk me through your design process and methodology]",
       mode: 'casestudies' as ChatMode,
       category: 'casestudies' as const,
-      description: "Learn about her approach and methods"
+      description: "Learn about approach and methods"
     },
     {
       id: 'resume-download',
-      text: "Download her resume",
-      message: "[Resume: I'd like to download Bethany's resume to learn more about her experience]",
+      text: "Download resume",
+      message: "[Resume: I'd like to download your resume to learn more about your experience]",
       mode: 'resume' as ChatMode,
       category: 'resume' as const,
       description: "Get resume and experience details"
     },
     {
       id: 'resume-skills',
-      text: "What technologies does she use?",
-      message: "[Resume: What technologies, tools, and skills does Bethany work with?]",
+      text: "What technologies do you use?",
+      message: "[Resume: What technologies, tools, and skills do you work with?]",
       mode: 'resume' as ChatMode,
       category: 'resume' as const,
       description: "Explore technical skills and tools"
     },
     {
       id: 'about-background',
-      text: "Tell me about Bethany's background",
-      message: "[About Bethany: Tell me about Bethany's background and what got her into design]",
+      text: "Tell me about your background",
+      message: "[About Bethany: Tell me about your background and what got you into design]",
       mode: 'about' as ChatMode,
       category: 'about' as const,
-      description: "Learn about her story and interests"
+      description: "Learn about your story and interests"
     },
     {
       id: 'about-availability',
-      text: "Is Bethany available for new projects?",
-      message: "[About Bethany: Is Bethany currently available for new projects or opportunities?]",
+      text: "Are you available for new projects?",
+      message: "[About Bethany: Are youcurrently available for new projects or opportunities?]",
       mode: 'about' as ChatMode,
       category: 'about' as const,
       description: "Inquire about availability"

@@ -52,7 +52,7 @@ const RoleBasedAccess = () => {
         name: "API Access",
         attributes: [
           { value: "Yes", status: "positive" },
-          { value: "Yese", status: "positive" },
+          { value: "Yes", status: "positive" },
           { value: "Yes", status: "positive" },
           { value: "Yes", status: "positive" },
           { value: "Yes", status: "positive" },
@@ -88,17 +88,17 @@ const RoleBasedAccess = () => {
           </TabsList>
         </Tabs>
         <div className="rounded-lg border overflow-hidden">
-          <Table className="table-fixed [&_td]:border-r [&_td]:border-b [&_th]:border-r [&_th]:border-b [&_td:last-child]:border-r-0 [&_th:last-child]:border-r-0 [&_tr:last-child_td]:border-b-0">
+          <Table className="table-fixed [&_td]:border-r [&_td]:border-b [&_th]:border-r [&_th]:border-b [&_td:last-child]:border-r-0 [&_th:last-child]:border-r-0 [&_tr:last-child_td]:border-b-0 table-border-override">
             <TableHeader>
               <TableRow>
-                <TableHead className="sticky top-0 mb-24 w-1/4 bg-muted p-5 text-base font-mono text-foreground font-bold after:absolute after:right-0 after:-bottom-px after:left-0 after:h-px after:bg-border">
+                <TableHead className="sticky top-0 mb-24 w-1/4 !bg-gray-50 dark:!bg-gray-900 p-5 text-base font-mono text-foreground font-bold after:absolute after:right-0 after:-bottom-px after:left-0 after:h-px after:bg-gray-300 dark:after:bg-gray-600">
                   Feature
                 </TableHead>
                 {comparisonData.models.map((model, idx) => (
                   <TableHead
                     key={idx}
                     className={cn(
-                      "sticky top-0 mb-24 w-1/4 bg-muted p-5 text-center text-base font-mono text-foreground font-bold after:absolute after:right-0 after:-bottom-px after:left-0 after:h-px after:bg-border md:table-cell",
+                      "sticky top-0 mb-24 w-1/4 !bg-gray-50 dark:!bg-gray-900 p-5 text-center text-base font-mono text-foreground font-bold after:absolute after:right-0 after:-bottom-px after:left-0 after:h-px after:bg-gray-300 dark:after:bg-gray-600 md:table-cell",
                       model.name !== selectedTab ? "hidden" : "",
                     )}
                   >

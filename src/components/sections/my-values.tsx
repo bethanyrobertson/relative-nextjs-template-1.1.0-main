@@ -44,8 +44,8 @@ export default function MyValues() {
               </div>
             </CardHeader>
             <CardContent className="space-y-4 p-0">
-              <h3 className="text-2xl font-semibold">{value.value}</h3>
-              <p className="text-lg leading-8">{value.description}</p>
+              <h3 className="font-bold font-mono">{value.value}</h3>
+              <p className="text-sm">{value.description}</p>
             </CardContent>
           </Card>
         ))}

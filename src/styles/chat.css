@@ -18,11 +18,19 @@
   flex-grow: 0;
 }
 
+/* Mobile responsive margins */
+@media (max-width: 768px) {
+  .chat-interface {
+    margin: 16px;
+    max-width: calc(100% - 32px);
+  }
+}
+
 .chat-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 20px;
+  gap: 12px;
+  padding: 12px 20px;
   background: #002226;
   border-bottom: 1px solid rgb(229 231 235 / 15%);
 }
@@ -34,8 +42,8 @@
 }
 
 .avatar-container svg {
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
 }
 
 .chat-title h3 {
@@ -56,6 +64,25 @@
     /* Prevent expansion beyond container */
     max-height: calc(100% - 120px); /* Account for header and input area */
   }
+
+  /* Custom scrollbar styling */
+  .chat-messages::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .chat-messages::-webkit-scrollbar-track {
+    background: #001214;
+    border-radius: 4px;
+  }
+
+  .chat-messages::-webkit-scrollbar-thumb {
+    background: rgba(218, 196, 225, 0.7);
+    border-radius: 4px;
+  }
+
+  .chat-messages::-webkit-scrollbar-thumb:hover {
+    background: rgba(218, 196, 225, 0.9);
+  }
   
   /* Even smaller font size for mobile agent responses */
   .assistant-message .message-content {
@@ -69,15 +96,17 @@
 }
 
 .assistant-message {
-  background: #002226;
+  background: transparent;
   padding: 20px;
   border-radius: 12px;
 }
 
 .user-message {
+  background: #002226;
   color: #b4d5da;
   padding: 12px 16px;
-  border-radius: 12px;
+  border-radius: 20px;
+  width: fit-content;
   max-width: 300px;
   margin-left: auto;
   text-align: right;
@@ -166,7 +195,7 @@
 
 .contact-action-btn {
   min-width: 80px;
-  height: 44px; /* Match other buttons */
+  height: 36px; /* Match other buttons */
   font-size: 12px;
   padding: 6px 12px;
   flex-shrink: 0;
@@ -180,11 +209,11 @@
 }
 
 .contact-action-btn:hover {
-  background: #cdcbff !important;
+  background: #D0BCFF !important;
   color: #012b31 !important;
-  border-color: #cdcbff !important;
+  border-color: #D0BCFF !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(205, 203, 255, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(208, 188, 255, 0.3) !important;
 }
 
 .contact-action-btn span {
@@ -221,9 +250,34 @@
 .button-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 16px;
+  gap: 8px;
+  margin-top: 12px;
   align-items: center; /* Ensure buttons are aligned */
+}
+
+/* Combined container for input and buttons */
+.chat-input-and-buttons-container {
+  background: #002226;
+  border-radius: 0 0 24px 24px;
+  border-top: 1px solid rgb(229 231 235 / 15%);
+}
+
+/* Main menu buttons should stay in a single row */
+.main-menu-buttons {
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  padding: 8px 0 12px 24px; /* Top, right, bottom, left padding around buttons */
+  margin-bottom: 16px; /* Reduced bottom margin for the interface */
+  background: transparent; /* Transparent since parent has background */
+  border-radius: 12px; /* Rounded corners to match input */
+  margin-top: 8px; /* Small gap above buttons */
+}
+
+/* Ensure button text stays on one line */
+.main-menu-buttons .btn {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  min-width: fit-content !important;
 }
 
 /* Chat-specific button styles - must override globals.css */
@@ -231,34 +285,36 @@
 .chat-modal-content .btn {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 8px !important;
-  padding: 12px 16px !important;
-  border-radius: 50px !important;
+  gap: 6px !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
   border: none !important;
   cursor: pointer !important;
   font-weight: 500 !important;
   transition: all 0.2s !important;
-  font-size: 14px !important;
-  background: #cdcbff !important;
+  font-size: 12px !important;
+  background: #DAC4E1 !important;
   color: #012b31 !important;
   font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
   width: fit-content !important;
-  height: 44px !important; /* Fixed height for all buttons */
+  height: 36px !important; /* Fixed height for all buttons */
+  min-height: 36px !important; /* Ensure minimum height is also set */
+  max-height: 36px !important; /* Ensure maximum height is also set */
 }
 
 .chat-interface .btn:hover,
 .chat-modal-content .btn:hover {
   transform: translateY(-1px) !important;
-  background: #b8b6ff !important;
+  background: #DAC4E1 !important;
   color: #012b31 !important;
-  box-shadow: 0 4px 12px rgba(205, 203, 255, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(218, 196, 225, 0.3) !important;
 }
 
 .button-text {
   flex: 1;
   text-align: left;
   font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
-  font-size: 13px;
+  font-size: 11px;
 }
 
 .external-icon {
@@ -268,48 +324,48 @@
 .chat-interface .btn-primary,
 .chat-modal-content .btn-primary {
   background: transparent !important;
-  border: 1px solid #cdcbff !important;
-  color: #cdcbff !important;
+  border: 1px solid #D0BCFF !important;
+  color: #D0BCFF !important;
   font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
-  height: 44px !important; /* Fixed height */
+  height: 36px !important; /* Fixed height */
 }
 
 .chat-interface .btn-primary:hover,
 .chat-modal-content .btn-primary:hover {
-  background: #cdcbff !important;
+  background: #DAC4E1 !important;
   color: #012b31 !important;
-  border-color: #cdcbff !important;
+  border-color: #DAC4E1 !important;
 }
 
 .chat-interface .btn-secondary,
 .chat-modal-content .btn-secondary {
   background: transparent !important;
-  border: 1px solid #cdcbff !important;
-  color: #cdcbff !important;
+  border: 1px solid #D0BCFF !important;
+  color: #D0BCFF !important;
   font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
-  height: 44px !important; /* Fixed height */
+  height: 36px !important; /* Fixed height */
 }
 
 .chat-interface .btn-secondary:hover,
 .chat-modal-content .btn-secondary:hover {
-  background: #cdcbff !important;
+  background: #DAC4E1 !important;
   color: #012b31 !important;
-  border-color: #cdcbff !important;
+  border-color: #DAC4E1 !important;
 }
 
 .chat-interface .btn-outline,
 .chat-modal-content .btn-outline {
   background: transparent !important;
-  border: 1px solid #cdcbff !important;
-  color: #cdcbff !important;
+  border: 1px solid #D0BCFF !important;
+  color: #D0BCFF !important;
   font-family: var(--font-mono), 'GeistMonoVF', 'GeistMono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
-  height: 44px !important; /* Fixed height */
+  height: 36px !important; /* Fixed height */
 }
 
 .btn-outline:hover {
-  background: #cdcbff !important;
+  background: #DAC4E1 !important;
   color: #012b31 !important;
-  border-color: #cdcbff !important;
+  border-color: #DAC4E1 !important;
 }
 
 /* Ensure all button text uses monospace font */
@@ -325,9 +381,9 @@
 .chat-modal-content .btn.btn-primary:hover,
 .chat-modal-content .btn.btn-secondary:hover,
 .chat-modal-content .btn.btn-outline:hover {
-  background: #cdcbff !important;
+  background: #DAC4E1 !important;
   color: #012b31 !important;
-  border-color: #cdcbff !important;
+  border-color: #DAC4E1 !important;
 }
 
 .chat-interface .btn span,
@@ -363,9 +419,9 @@ button {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #6b7280;
-  font-style: italic;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  /* color: #6b7280; */
+  /* font-style: italic; */
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; */
 }
 
 .loading-indicator .avatar-container {
@@ -377,14 +433,14 @@ button {
   height: 32px;
 }
 
-/* Thinking animation with bouncing dots */
+/* Thinking animation with bouncing dots - DISABLED for new implementation */
 .thinking-animation {
-  position: absolute;
-  right: -40px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  gap: 4px;
+  /* position: absolute; */
+  /* right: -40px; */
+  /* top: 50%; */
+  /* transform: translateY(-50%); */
+  /* display: flex; */
+  /* gap: 4px; */
 }
 
 .dot {
@@ -443,7 +499,7 @@ button {
   }
   
   .thinking-animation {
-    right: -32px;
+    /* right: -32px; */
   }
   
   .dot {
@@ -529,8 +585,8 @@ button {
 /* Chat Input Form - Desktop styles */
 .chat-input-container {
   padding: 20px;
-  background: black;
-  border-top: 1px solid rgb(229 231 235 / 15%);
+  background: transparent;
+  border-top: none;
   display: flex;
   align-items: center;
 }
@@ -579,8 +635,8 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   border: 1px solid #cdcbff;
   border-radius: 12px;
   background: transparent;

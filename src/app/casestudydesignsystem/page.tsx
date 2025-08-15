@@ -20,6 +20,7 @@ import MetricsDesignSystem from '@/components/sections/metrics-designsystem';
 import { RoleBasedAccess } from '@/components/sections/rolebasedaccess-designsystem';
 import { CaseStudyCarousel } from "@/components/sections/casestudycarousel";
 import { ComparisonDesignSystem } from '@/components/sections/comparison-designsystem';
+import DesignSystemFlow from '@/components/sections/searchdiscovery-designsystem';
 
 
 export default function HomeDesignSystem() {
@@ -32,6 +33,7 @@ export default function HomeDesignSystem() {
       <PersonasDesignSystem />
       <RequirementsDesignSystem />
       <TechnicalFeaturesDesignSystem />
+      <DesignSystemFlow />
       <PillarsDesignSystem />
       <FlowsDesignSystem />
       <DesignSystemFeatures />

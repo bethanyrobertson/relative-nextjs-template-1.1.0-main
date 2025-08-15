@@ -84,7 +84,7 @@ const TechnicalFeaturesDirectExpress = () => {
           <div className="flex shrink-0 flex-col gap-6 md:w-1/2 md:pr-8 lg:pr-24 lg:text-left 2xl:pr-32">
             <div className="w-fit">
               <CategoryBadge
-                label= "DESIGN SYSTEM"
+                label="DESIGN SYSTEM"
                 icon={Puzzle}
               />
             </div>
@@ -98,19 +98,28 @@ const TechnicalFeaturesDirectExpress = () => {
               {features.map((feature, i) => (
                 <li
                   key={feature.id}
-                  className="group relative w-full cursor-pointer px-6 py-3 transition data-open:bg-accent"
-                  data-open={selection === i ? "true" : undefined}
+                  className={`group relative w-full cursor-pointer px-6 py-3 transition-all duration-200 ${
+                    selection === i ? 'bg-accent rounded-xl' : ''
+                  }`}
                   onClick={() => setSelection(i)}
                 >
                   <div className="flex items-center justify-between gap-x-2">
                     <div className="font-bold font-mono text-foreground">
                       {feature.title}
                     </div>
-                    <div className="flex size-8 items-center justify-center rounded-full bg-accent text-accent-foreground group-hover:bg-primary group-hover:text-primary-foreground group-data-open:rounded-xl group-data-open:bg-primary group-data-open:text-primary-foreground">
-                      <ChevronDown className="size-4 shrink-0 transition-transform duration-200 group-data-open:rounded-xl group-data-open:rotate-180" />
+                    <div className={`flex size-8 items-center justify-center rounded-full transition-all duration-200 ${
+                      selection === i 
+                        ? 'bg-primary text-primary-foreground' 
+                        : 'bg-accent text-accent-foreground group-hover:bg-primary group-hover:text-primary-foreground'
+                    }`}>
+                      <ChevronDown className={`size-4 shrink-0 transition-transform duration-200 ${
+                        selection === i ? 'rotate-180' : ''
+                      }`} />
                     </div>
                   </div>
-                  <div className="hidden text-sm group-data-open:rounded-xl group-data-open:block">
+                  <div className={`text-sm transition-all duration-200 ${
+                    selection === i ? 'block opacity-100 max-h-32' : 'hidden opacity-0 max-h-0'
+                  }`}>
                     <p className="my-4 text-muted-foreground lg:my-6">
                       {feature.description}
                     </p>

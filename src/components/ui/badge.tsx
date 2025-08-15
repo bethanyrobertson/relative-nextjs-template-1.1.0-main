@@ -10,7 +10,7 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          'border-transparent text-black bg-[#cdcbff] icon-inherit',
+          'border-transparent text-black dark:text-white !bg-[#E1EDEC] dark:bg-sky-900 icon-inherit badge-default',
         secondary:
           'border-transparent bg-secondary text-secondary-foreground',
         destructive:

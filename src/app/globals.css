@@ -1,7 +1,9 @@
-@import '../styles/chat.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import '../styles/chat.css';
+@import '@xyflow/react/dist/style.css';
 
 @font-face {
   font-family: 'ITCGaramondstd-bkCondensed';
@@ -75,6 +77,11 @@
   --color-chart-3: hsl(var(--chart-3));
   --color-chart-4: hsl(var(--chart-4));
   --color-chart-5: hsl(var(--chart-5));
+  
+  /* Navbar colors */
+  --color-navbar-light: neutral-50;
+  --color-navbar-dark: #322F35;
+  --color-lilac: #D0BCFF;
 
   --radius: 1.25rem;
   --radius-sm: calc(var(--radius) - 4px);
@@ -154,6 +161,13 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --muted-foreground-subtle: 240 5% 34%;
+    --footer-bg: #EAEEEF;
+    --carousel-bg: #D7E0E1;
+    --nav-active-bg: #111827;
+    --nav-active-text: #ffffff;
+    --nav-inactive-text: #6b7280;
+    --nav-hover-bg: #f3f4f6;
+    --nav-hover-text: #111827;
 
     --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
     --tracking-tight: calc(var(--tracking-normal) - 0.025em);
@@ -188,6 +202,13 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    --footer-bg: #13343B;
+    --carousel-bg: #164E63;
+    --nav-active-bg: #ffffff;
+    --nav-active-text: #000000;
+    --nav-inactive-text: #9ca3af;
+    --nav-hover-bg: #1f2937;
+    --nav-hover-text: #ffffff;
   }
 }
 
@@ -244,20 +265,20 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    border-radius: 0.5rem;
+    gap: 0.375rem;
+    border-radius: 0.375rem;
     font-weight: 500;
     transition: all 0.2s ease-in-out;
     cursor: pointer;
     border: 1px solid transparent;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
   }
 
   .btn-primary {
-    background-color: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
+    background-color: 286 33% 83%;
+    color: 186 100% 7%;
   }
 
   .btn-primary:hover {
@@ -348,6 +369,19 @@ body {
   position: fixed;
 }
 
+/* Navbar color overrides with high specificity */
+header.bg-navbar-light {
+  background-color: var(--color-navbar-light) !important;
+}
+
+header.bg-navbar-light.dark\:bg-navbar-dark {
+  background-color: var(--color-navbar-light) !important;
+}
+
+.dark header.bg-navbar-light.dark\:bg-navbar-dark {
+  background-color: var(--color-navbar-dark) !important;
+}
+
 .snap-item {
   scroll-snap-align: start;
 }
@@ -359,7 +393,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(4, 47, 46, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -816,4 +850,333 @@ body {
   .lg\:container {
     max-width: 1024px;
   }
+}
+
+/* Custom override for TabsList dark mode */
+.dark .tabs-list-override {
+  background-color: rgb(0 34 38) !important;
+}
+
+/* Custom navbar background - very specific */
+.navbar-custom-bg {
+  background-color: neutral-50 !important;
+}
+
+.dark .navbar-custom-bg {
+  background-color: rgba(4, 47, 46, 0.5) !important;
+}
+
+/* Custom navbar logo colors */
+.navbar-logo {
+  filter: brightness(0) !important; /* Black in light mode */
+}
+
+.dark .navbar-logo {
+  filter: brightness(1) !important; /* Original color in dark mode */
+}
+
+/* Force badge colors with !important */
+.badge-default {
+  background-color: rgb(237 233 254) !important; /* bg-violet-100 */
+  color: rgb(0 0 0) !important; /* text-black */
+}
+
+.dark .badge-default {
+  background-color: rgba(4, 47, 46, 0.8) !important; /* bg-violet-900 */
+  color: rgb(255 255 255) !important; /* text-white */
+}
+
+/* Custom tab text colors */
+.tabs-list-override [data-state="active"] {
+  color: rgb(0 0 0) !important; /* Black for active in light mode */
+}
+
+.dark .tabs-list-override [data-state="active"] {
+  color: rgb(0 0 0) !important; /* White for active in dark mode */
+}
+
+.dark .tabs-list-override [data-state="inactive"] {
+  color: rgb(147 197 253) !important; /* Light blue for inactive in dark mode */
+}
+
+/* Force table border colors */
+.table-border-override th,
+.table-border-override td {
+  border-color: rgb(209 213 219) !important; /* Light gray borders */
+}
+
+.dark .table-border-override th,
+.dark .table-border-override td {
+  border-color: rgb(75 85 99) !important; /* Darker gray borders */
+}
+
+/* Force ReactFlow rounded corners */
+.flowmap-rounded-wrapper .react-flow__viewport,
+.flowmap-rounded-wrapper .react-flow__renderer,
+.flowmap-rounded-wrapper .react-flow__container,
+.flowmap-rounded-wrapper .react-flow,
+.flowmap-rounded-wrapper .react-flow__node,
+.flowmap-rounded-wrapper .react-flow__edge {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+/* More aggressive override */
+.flowmap-rounded-wrapper * {
+  border-radius: 12px !important;
+}
+
+/* Force ReactFlow background to be transparent */
+.flowmap-rounded-wrapper .react-flow__viewport,
+.flowmap-rounded-wrapper .react-flow__renderer,
+.flowmap-rounded-wrapper .react-flow__container {
+  background: transparent !important;
+}
+
+
+
+/* Force the wrapper background to show through */
+.flowmap-rounded-wrapper {
+  background: linear-gradient(rgb(228,247,245) 0%, rgb(255,240,227) 43.03%, rgb(240,246,255) 100%) !important;
+}
+
+/* Override any React Flow internal backgrounds */
+.flowmap-rounded-wrapper .react-flow,
+.flowmap-rounded-wrapper .react-flow__pane,
+.flowmap-rounded-wrapper .react-flow__selection {
+  background: transparent !important;
+}
+
+
+
+.react-flow {
+  --xy-background-color: #f7f9fb;
+  /* Custom Variables */
+  --xy-theme-selected: #f57dbd;
+  --xy-theme-hover: #c5c5c5;
+  --xy-theme-edge-hover: black;
+  --xy-theme-color-focus: #e8e8e8;
+ 
+  /* Built-in Variables see https://reactflow.dev/learn/customization/theming */
+  --xy-node-border-default: 1px solid #ededed;
+ 
+ 
+  --xy-node-border-radius-default: 8px;
+ 
+  --xy-handle-background-color-default: #ffffff;
+  --xy-handle-border-color-default: #aaaaaa;
+ 
+  --xy-edge-label-color-default: #505050;
+}
+
+/* Customizing Default Theming */
+ 
+.react-flow__node {
+  border-radius: var(--xy-node-border-radius-default);
+  background-color: white; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  font-size: 12px;
+  flex-direction: column;
+  border: var(--xy-node-border-default);
+  color: black;
+}
+ 
+.react-flow__node.selectable:focus {
+  border-color: #d9d9d9;
+}
+ 
+ 
+.react-flow__node.selectable:hover,
+.react-flow__node.draggable:hover {
+  border-color: var(--xy-theme-hover);
+}
+ 
+.react-flow__node.selectable.selected {
+  border-color: var(--xy-theme-selected);
+}
+ 
+.react-flow__node-group {
+  background-color: rgba(207, 182, 255, 0.4);
+  border-color: #9e86ed;
+}
+ 
+.react-flow__edge.selectable:hover .react-flow__edge-path,
+.react-flow__edge.selectable.selected .react-flow__edge-path {
+  stroke: var(--xy-theme-edge-hover);
+}
+ 
+.react-flow__handle {
+  background-color: var(--xy-handle-background-color-default);
+}
+ 
+.react-flow__handle.connectionindicator:hover {
+  pointer-events: all;
+  border-color: var(--xy-theme-edge-hover);
+  background-color: white;
+}
+ 
+.react-flow__handle.connectionindicator:focus,
+.react-flow__handle.connectingfrom,
+.react-flow__handle.connectingto {
+  border-color: var(--xy-theme-edge-hover);
+}
+ 
+.react-flow__node-resizer {
+  border-radius: 0;
+  border: none;
+}
+ 
+.react-flow__resize-control.handle {
+  background-color: #ffffff;
+  border-color: #9e86ed;
+  border-radius: 0;
+  width: 5px;
+  height: 5px;
+}
+
+:root {
+  --color-primary: #ff0073;
+  --color-background: #fefefe;
+  --color-hover-bg: #f6f6f6;
+  --color-disabled: #76797e;
+}
+ 
+.xy-theme__button-group {
+  display: flex;
+  align-items: center;
+ 
+  .xy-theme__button:first-child {
+    border-radius: 100px 0 0 100px;
+  }
+ 
+  .xy-theme__button:last-child {
+    border-radius: 0 100px 100px 0;
+    margin: 0;
+  }
+}
+ 
+/* Custom Button Styling */
+.xy-theme__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  padding: 0 1rem;
+  border-radius: 100px;
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-background);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  cursor: pointer;
+}
+ 
+.xy-theme__button.active {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+ 
+.xy-theme__button.active:hover,
+.xy-theme__button.active:active {
+  background-color: var(--color-primary);
+  opacity: 0.9;
+}
+ 
+.xy-theme__button:hover {
+  background-color: var(--xy-controls-button-background-color-hover-default);
+}
+ 
+.xy-theme__button:active {
+  background-color: var(--color-hover-bg);
+}
+ 
+.xy-theme__button:disabled {
+  color: var(--color-disabled);
+  opacity: 0.8;
+  cursor: not-allowed;
+  border: 1px solid var(--color-disabled);
+}
+ 
+.xy-theme__button > span {
+  margin-right: 0.2rem;
+}
+ 
+/* Add gap between adjacent buttons */
+.xy-theme__button + .xy-theme__button {
+  margin-left: 0.3rem;
+}
+ 
+/* Example Input Styling */
+.xy-theme__input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-primary);
+  border-radius: 7px;
+  background-color: var(--color-background);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  font-size: 1rem;
+}
+ 
+.xy-theme__input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+/* Specific Checkbox Styling */
+.xy-theme__checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 7px;
+  border: 2px solid var(--color-primary);
+  background-color: var(--color-background);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+ 
+.xy-theme__checkbox:checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+ 
+.xy-theme__checkbox:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 0, 115, 0.3);
+}
+ 
+/* Dropdown Styling */
+.xy-theme__select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-primary);
+  border-radius: 50px;
+  background-color: var(--color-background);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  font-size: 1rem;
+  color: inherit;
+  margin-right: 0.5rem;
+  box-shadow: var(--xy-node-boxshadow-default);
+}
+ 
+.xy-theme__select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+ 
+.xy-theme__label {
+  margin-top: 10px;
+  margin-bottom: 3px;
+  display: inline-block;
 }

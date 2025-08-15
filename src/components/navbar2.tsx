@@ -29,25 +29,24 @@ const ITEMS = [
     label: 'Case Studies',
     dropdownItems: [
       {
-        title: 'elevenist',
-        href: '/casestudyelevenist',
-        description:
-          'Mainline is built on the habits that make the best product teams successful',
-      },
-      {
         title: 'Direct Express',
         href: '/casestudydirectexpress',
-        description: 'Mainline your resource allocation and execution',
+        description: '0-> 1 product and brand for banking',
       },
       {
-        title: 'Design System API',
+        title: 'Vector API',
         href: '/casestudydesignsystem',
-        description: 'Mainline your resource allocation and execution',
+        description: 'Frontend and backend for a design system API',
       },
       {
-        title: 'Cloud',
+        title: 'CoinbaseCloud',
         href: '/casestudycloud',
-        description: 'Mainline your resource allocation and execution',
+        description: 'Design system and identity for crypto',
+      },
+      {
+        title: 'AI Portfolio Navigator',
+        href: '/casestudychatbot',
+        description: 'Custom AI chatbot for designers',
       },
     ],
   },
@@ -71,11 +70,11 @@ const Navbar2 = () => {
 
   return (
     <>
-      <header className="bg-white fixed top-5 left-1/2 z-[60] w-[min(90%,700px)] -translate-x-1/2 rounded-full border backdrop-blur-md lg:top-12">
+      <header className="navbar-custom-bg fixed top-5 left-1/2 z-[60] w-[min(90%,700px)] -translate-x-1/2 rounded-full border backdrop-blur-md lg:top-12">
         <div className="flex items-center justify-between px-6 py-3">
-          <Link href="/" className="flex shrink-0 items-center gap-2">
+                      <Link href="/home" className="flex shrink-0 items-center gap-2 navbar-logo">
             <Image
-              src="/broberlogo.png"
+              src="/broberlogo.svg"
               alt="logo"
               width={94}
               height={18}
@@ -99,7 +98,7 @@ const Navbar2 = () => {
                             <NavigationMenuLink asChild>
                               <Link
                                 href={item.href}
-                                className="group hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground flex items-center gap-4 rounded-md p-3 leading-none no-underline outline-hidden transition-colors select-none"
+                                className="group hover:bg-accent hover:text-foreground focus:bg-accent focus:text-accent-foreground flex items-center gap-4 rounded-md p-3 leading-none no-underline outline-hidden transition-colors select-none"
                               >
                                 <div className="space-y-1.5 transition-transform duration-300 group-hover:translate-x-1">
                                   <div className="text-sm leading-none font-medium">
@@ -121,7 +120,7 @@ const Navbar2 = () => {
                     <Link
                       href={link.href}
                       className={cn(
-                        'relative bg-transparent px-1.5 text-sm font-medium',
+                        'relative bg-transparent px-1.5 text-sm font-mono',
                         pathname === link.href && 'text-muted-foreground',
                       )}
                     >
@@ -141,7 +140,7 @@ const Navbar2 = () => {
               onClick={handleContactClick}
               className="max-lg:hidden rounded-full"
             >
-              <span className="relative z-10">Contact</span>
+              <span className="relative z-10">Chat with me</span>
             </Button>
 
             {/* Hamburger Menu Button (Mobile Only) */}
@@ -237,7 +236,7 @@ const Navbar2 = () => {
                     setIsMenuOpen(false);
                     setIsChatModalOpen(true);
                   }}
-                  className="text-primary hover:text-primary/80 py-4 text-base font-medium transition-colors first:pt-0 last:pb-0 w-full text-left rounded-lg hover:bg-accent/50 px-3 py-2 transition-colors"
+                  className="text-primary hover:text-primary/80 text-base font-medium transition-colors first:pt-0 last:pb-0 w-full text-left rounded-lg hover:bg-accent/50 px-3 py-2"
                 >
                   {link.label}
                 </button>
@@ -246,7 +245,7 @@ const Navbar2 = () => {
                   key={link.label}
                   href={link.href}
                   className={cn(
-                    'text-primary hover:text-primary/80 py-4 text-base font-medium transition-colors first:pt-0 last:pb-0 rounded-lg hover:bg-accent/50 px-3 py-2 transition-colors',
+                    'text-primary hover:text-primary/80 py-4 text-base font-medium transition-colors first:pt-0 last:pb-0 rounded-lg hover:bg-accent/50 px-3',
                     pathname === link.href && 'text-muted-foreground',
                   )}
                   onClick={() => setIsMenuOpen(false)}

@@ -403,7 +403,8 @@ export const useQuickActions = () => {
       message: "[Case Studies: Show me Bethany's most impactful projects and the results she achieved]",
       mode: 'casestudies' as ChatMode,
       category: 'casestudies' as const,
-      description: "Explore case studies and design work"
+      description: "Explore case studies and design work",
+      icon: 'star'
     },
     {
       id: 'case-studies-process',
@@ -411,7 +412,8 @@ export const useQuickActions = () => {
       message: "[Case Studies: Walk me through Bethany's design process and methodology]",
       mode: 'casestudies' as ChatMode,
       category: 'casestudies' as const,
-      description: "Learn about her approach and methods"
+      description: "Learn about her approach and methods",
+      icon: 'workflow'
     },
     {
       id: 'resume-download',
@@ -419,7 +421,8 @@ export const useQuickActions = () => {
       message: "[Resume: I'd like to download Bethany's resume to learn more about her experience]",
       mode: 'resume' as ChatMode,
       category: 'resume' as const,
-      description: "Get resume and experience details"
+      description: "Get resume and experience details",
+      icon: 'download'
     },
     {
       id: 'resume-skills',
@@ -427,7 +430,8 @@ export const useQuickActions = () => {
       message: "[Resume: What technologies, tools, and skills does Bethany work with?]",
       mode: 'resume' as ChatMode,
       category: 'resume' as const,
-      description: "Explore technical skills and tools"
+      description: "Explore technical skills and tools",
+      icon: 'code'
     },
     {
       id: 'about-background',
@@ -435,7 +439,8 @@ export const useQuickActions = () => {
       message: "[About Bethany: Tell me about Bethany's background and what got her into design]",
       mode: 'about' as ChatMode,
       category: 'about' as const,
-      description: "Learn about her story and interests"
+      description: "Learn about her story and interests",
+      icon: 'user'
     },
     {
       id: 'about-availability',
@@ -443,7 +448,8 @@ export const useQuickActions = () => {
       message: "[About Bethany: Is Bethany currently available for new projects or opportunities?]",
       mode: 'about' as ChatMode,
       category: 'about' as const,
-      description: "Inquire about availability"
+      description: "Inquire about availability",
+      icon: 'calendar'
     }
   ];
 

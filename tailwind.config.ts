@@ -9,6 +9,7 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -38,6 +39,16 @@ const config: Config = {
         'chart-3': 'hsl(var(--chart-3))',
         'chart-4': 'hsl(var(--chart-4))',
         'chart-5': 'hsl(var(--chart-5))',
+        // Navbar colors
+        'navbar-light': '#FEF7FF',
+        'navbar-dark': '#322F35',
+        // Button colors
+        'lilac': '#D0BCFF',
+        // Custom colors
+        'custom-purple': '#F3EDF7',
+        'custom-dark': '#002226',
+        'footer-light': '#EAEEEF',
+        'footer-dark': '#13343B'
       },
       borderRadius: {
         radius: 'var(--radius)',
