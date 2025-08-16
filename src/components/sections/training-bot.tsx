@@ -6,7 +6,7 @@ import SectionHeader from "../section-header";
 const TrainingBot = () => {
   return (
     <section className="py-32 relative">
-       <div className="absolute inset-0 bg-[#EFF3F2] w-screen left-1/2 -translate-x-1/2 -z-10"></div>
+       <div className="absolute inset-0 w-screen left-1/2 -translate-x-1/2 -z-10"></div>
         <SectionHeader
           category="PROCESS"
           title="Progressive AI Training: From Content Knowledge to Intelligent Navigation"
@@ -18,7 +18,7 @@ const TrainingBot = () => {
           <div className="flex flex-col lg:block">
             <div className="h-full max-h-[500px] rounded-lg border bg-muted p-3">
               <img
-                src="https://www.dropbox.com/scl/fi/0a3nvtg9jb8s31osmqrm4/fees.png?rlkey=fug3st8srbdi6js91ml737sxx&st=8e30nr7n&raw=1"
+                src="https://imagedelivery.net/N-MD9o_LYLdDJqNonHl96g/fcd336cd-ae2c-4aa4-1115-3b8e98a06700/public"
                 alt="placeholder"
                 className="h-full w-full rounded-lg object-cover"
               />
@@ -40,7 +40,7 @@ const TrainingBot = () => {
           <div className="flex flex-col lg:block">
             <div className="h-full max-h-[500px] rounded-lg border bg-muted p-3">
               <img
-                src="https://www.dropbox.com/scl/fi/vhdp2pc470cno1zoa2gjf/Donut-Chart_-3-Parts-remix.gif?rlkey=vezap2gdd5f5n2jge3sdd9i5f&st=bnvnh8dp&raw=1"
+                src="https://imagedelivery.net/N-MD9o_LYLdDJqNonHl96g/6b318edb-dc4f-4cf3-c354-c5fe7bd83c00/public"
                 alt="placeholder"
                 className="h-full w-full rounded-lg object-cover"
               />
@@ -62,7 +62,7 @@ const TrainingBot = () => {
           <div className="flex flex-col lg:block">
             <div className="h-full max-h-[500px] rounded-lg border bg-muted p-3">
               <img
-                src="https://imagedelivery.net/N-MD9o_LYLdDJqNonHl96g/6b993d08-fe12-48be-345b-d4c554b48800/public"
+                src="https://imagedelivery.net/N-MD9o_LYLdDJqNonHl96g/6b318edb-dc4f-4cf3-c354-c5fe7bd83c00/public"
                 alt="placeholder"
                 className="h-full w-full rounded-lg object-cover"
               />

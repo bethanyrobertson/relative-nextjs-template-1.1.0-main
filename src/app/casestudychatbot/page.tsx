@@ -8,7 +8,7 @@ import { CaseStudyCarousel } from "@/components/sections/casestudycarousel";
 import { TrainingBot } from "@/components/sections/training-bot";
 import FlowmapBot from "@/components/sections/flowmap-bot";
 import FloatingNav from "@/components/floatingnav-bot";
-import TechnicalArchitectureBot from "@/components/sections/technicalarchitecture-bot";
+import { TldrBot } from "@/components/sections/tldr-bot";
 
 export default function CaseStudyBot() {
     return (
@@ -19,7 +19,11 @@ export default function CaseStudyBot() {
                 <section id="outcome" className="min-h-screen">
                     <HeroBot />
                 </section>
-                
+
+                <section id="tldr" className="min-h-screen">
+                    <TldrBot />
+                </section>
+
                 <section id="opportunity" className="min-h-screen">
                     <OutcomesBot />
                 </section>
@@ -31,7 +35,6 @@ export default function CaseStudyBot() {
                 
                 <section id="solution" className="min-h-screen">
                     <FlowmapBot />
-                    <TechnicalArchitectureBot />
                 </section>
                 
                 <section id="integration" className="min-h-screen">

@@ -12,7 +12,7 @@ A decade of experience across design, with a focus on product design and design 
 ## Hobbies & Interests
 - **Creative:** Illustration, Baking, Crafting cocktails, Learning to knit
 - **Travel:** Sri Lanka, India, Nepal
-- **Media:** Documentary films
+- **Media:** Documentary films, podcasts, books
 - **Personal:** Spending time with partner and dog Mochi
 
 ## Contact Information
@@ -23,7 +23,7 @@ A decade of experience across design, with a focus on product design and design 
   'case-studies.md': `# Case Studies
 
 ## FinTech Mobile Banking Redesign
-**Duration:** 6 months | **Team:** 2 designers, 4 developers, 1 PM
+**Duration:** 10 months | **Team:** 1 designer, 4 developers, 1 PM
 
 ### The Challenge
 Legacy mobile banking app suffered from poor usability, resulting in high customer support volume and low user satisfaction scores.
@@ -160,7 +160,7 @@ My approach always starts with understanding the user's real needs, not just wha
 
 ## Beyond Design
 When I'm not designing, you'll find me:
-- Creating illustrations and exploring my artistic roots
+- Creating illustrations
 - Baking delicious treats and crafting cocktails
 - Traveling to amazing places (Sri Lanka, India, and Nepal are favorites)
 - Spending quality time with my partner and our dog Mochi

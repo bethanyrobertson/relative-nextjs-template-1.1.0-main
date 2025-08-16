@@ -433,6 +433,15 @@ header.bg-navbar-light.dark\:bg-navbar-dark {
   background-color: transparent !important;
 }
 
+/* Override for thinking animation in modal */
+.chat-modal-content .thinking-animation,
+.chat-modal-content .thinking-animation * {
+  background-color: transparent !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
 .chat-modal-content .chat-interface {
   background: #001214 !important;
 }
@@ -455,6 +464,36 @@ header.bg-navbar-light.dark\:bg-navbar-dark {
 
 .chat-modal-content .chat-input {
   background: #1E1E1E !important;
+}
+
+/* Ensure thinking animation is visible in modal */
+.chat-modal-content .thinking-animation {
+  background-color: transparent !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 10 !important;
+  overflow: visible !important;
+}
+
+/* Ensure MotionGridDemo is visible in modal */
+.chat-modal-content .thinking-animation > div {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 10 !important;
+  overflow: visible !important;
+}
+
+/* Ensure all grid-related elements are visible in modal */
+.chat-modal-content [class*="grid"],
+.chat-modal-content [class*="motion"],
+.chat-modal-content [class*="cell"] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .chat-modal-content {
@@ -877,7 +916,7 @@ header.bg-navbar-light.dark\:bg-navbar-dark {
 
 /* Force badge colors with !important */
 .badge-default {
-  background-color: rgb(237 233 254) !important; /* bg-violet-100 */
+  background-color: rgb(215 224 225) !important; /* #d7e0e1 - light lilac */
   color: rgb(0 0 0) !important; /* text-black */
 }
 

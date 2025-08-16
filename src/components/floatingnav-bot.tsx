@@ -1,7 +1,7 @@
 "use client"
 
 import { Rocket, Lightbulb, ArrowBigRight, Route, Zap, Sparkles, Search } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useTheme } from "next-themes"
 
 const sections = [
@@ -15,8 +15,11 @@ const sections = [
 ]
 
 export default function FloatingNav() {
-  const [activeSection, setActiveSection] = useState("overview")
+  const [activeSection, setActiveSection] = useState("tldr")
   const { theme } = useTheme()
+  const navContainerRef = useRef<HTMLDivElement>(null)
+  const buttonRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({})
+
   const customColors = {
     lightBg: "#032121",
     lightBorder: "#032121",
@@ -34,10 +37,19 @@ export default function FloatingNav() {
     darkActiveText: "#000000"
   }
 
+  // Handle page scrolling and active section detection
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 100
+      const scrollPosition = window.scrollY + 50 // Reduced offset for better detection
 
+      // Check if we're at the very top (tl;dr section)
+      if (scrollPosition < 100) {
+        console.log("Setting active section to tldr (top of page)")
+        setActiveSection("tldr")
+        return
+      }
+
+      // Check sections from bottom to top
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.getElementById(sections[i].id)
         if (section && section.offsetTop <= scrollPosition) {
@@ -47,9 +59,44 @@ export default function FloatingNav() {
       }
     }
 
+    // Call once on mount to set initial active section
+    handleScroll()
+    
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  // Auto-scroll nav bar to keep active section in view
+  useEffect(() => {
+    const activeButton = buttonRefs.current[activeSection]
+    const navContainer = navContainerRef.current
+
+    if (activeButton && navContainer) {
+      // Get the button's position relative to the container
+      const buttonRect = activeButton.getBoundingClientRect()
+      const containerRect = navContainer.getBoundingClientRect()
+      
+      // Calculate if the button is outside the visible area
+      const buttonLeft = buttonRect.left - containerRect.left + navContainer.scrollLeft
+      const buttonRight = buttonLeft + buttonRect.width
+      const containerWidth = navContainer.clientWidth
+      
+      // If button is to the right of visible area
+      if (buttonRight > navContainer.scrollLeft + containerWidth) {
+        navContainer.scrollTo({
+          left: buttonRight - containerWidth + 20, // 20px padding
+          behavior: 'smooth'
+        })
+      }
+      // If button is to the left of visible area
+      else if (buttonLeft < navContainer.scrollLeft) {
+        navContainer.scrollTo({
+          left: buttonLeft - 20, // 20px padding
+          behavior: 'smooth'
+        })
+      }
+    }
+  }, [activeSection])
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
@@ -62,11 +109,14 @@ export default function FloatingNav() {
     <div className="container">
       <nav className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 px-4 w-full max-w-screen-sm">
         <div 
-          className="rounded-full px-2 md:px-6 py-2 md:py-3 shadow-lg overflow-x-auto transition-colors duration-300"
+          ref={navContainerRef}
+          className="rounded-full px-2 md:px-6 py-2 md:py-3 shadow-lg overflow-x-auto transition-colors duration-300 scrollbar-hide"
           style={{
             backgroundColor: theme === 'dark' ? customColors.darkBg : customColors.lightBg,
             border: `1px solid ${theme === 'dark' ? customColors.darkBorder : customColors.lightBorder}`,
-            color: theme === 'dark' ? customColors.darkText : customColors.lightText
+            color: theme === 'dark' ? customColors.darkText : customColors.lightText,
+            scrollbarWidth: 'none', // Firefox
+            msOverflowStyle: 'none', // IE/Edge
           }}
         >
           <div className="flex items-center space-x-1 md:space-x-2 min-w-max">
@@ -77,8 +127,17 @@ export default function FloatingNav() {
               return (
                 <button
                   key={section.id}
+                  ref={(el) => {
+                    if (el) {
+                      buttonRefs.current[section.id] = el
+                      // Debug: Log when tl;dr button ref is assigned
+                      if (section.id === "tldr") {
+                        console.log("tl;dr button ref assigned:", el)
+                      }
+                    }
+                  }}
                   onClick={() => scrollToSection(section.id)}
-                                    className={`flex items-center gap-1 md:gap-2 px-2 md:px-3 py-2 rounded-full transition-all duration-200 whitespace-nowrap ${
+                  className={`flex items-center gap-1 md:gap-2 px-2 md:px-3 py-2 rounded-full transition-all duration-200 whitespace-nowrap ${
                     isActive
                       ? "shadow-none"
                       : ""
@@ -104,6 +163,12 @@ export default function FloatingNav() {
           </div>
         </div>
       </nav>
+      
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
   )
 }

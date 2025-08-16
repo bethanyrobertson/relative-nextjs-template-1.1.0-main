@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { X } from 'lucide-react';
-import ChatInterface from './ChatInterface';
+import MainChatInterface from './MainChatInterface';
 
 interface ChatModalProps {
   isOpen: boolean;
@@ -35,17 +35,18 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
         
         {/* Modal Content */}
         <div 
-          className="relative w-full h-[600px] sm:h-[600px] rounded-2xl overflow-hidden chat-modal-content no-white-box"
+          className="relative w-full h-[600px] sm:h-[600px] rounded-2xl chat-modal-content no-white-box"
           onClick={(e) => e.stopPropagation()}
           style={{ 
             background: 'transparent',
             border: 'none',
-            outline: 'none'
+            outline: 'none',
+            overflow: 'visible'
           }}
         >
           {/* Chat Interface */}
-          <div className="h-full flex items-center justify-center">
-            <ChatInterface />
+          <div className="h-full">
+            <MainChatInterface />
           </div>
         </div>
       </div>

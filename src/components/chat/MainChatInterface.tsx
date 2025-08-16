@@ -4,8 +4,6 @@ import { ASSISTANT_INSTRUCTIONS } from '@/data/assistant-config';
 import { MotionGridDemo } from '@/components/sections/motion-grid-demo';
 import { useQuickActions } from '@/hooks/useChat';
 
-import Link from 'next/link';
-
 interface ChatButton {
   id: string;
   text: string;
@@ -87,7 +85,7 @@ const formatMessage = (message: string): string => {
   }).join('\n\n');
 };
 
-const ChatInterface = () => {
+const MainChatInterface = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
@@ -236,7 +234,6 @@ const ChatInterface = () => {
         },
         body: JSON.stringify({
           message: `[BUTTON_ACTION: ${button.action}]`,
-          messages: [...messages, buttonMessage],
           instructions: ASSISTANT_INSTRUCTIONS,
           buttonAction: button.action
         }),
@@ -322,29 +319,6 @@ const ChatInterface = () => {
 
   return (
     <div className="chat-interface">
-      {/* Header */}
-      <div className="chat-header">
-        <div className="header-left">
-          <div className="avatar-container">
-            <img
-              src="/bethanybot.png"
-              alt="Bethany"
-              width="36"
-              height="36"
-              style={{
-                borderRadius: '50%',
-                objectFit: 'cover'
-              }}
-            />
-          </div>
-          <div className="chat-title">Bethany</div>
-        </div>
-        
-        <Link href="/casestudychatbot" className="more-about-link">
-          More about this interface →
-        </Link>
-      </div>
-
       {/* Messages */}
       <div className="chat-messages">
         {messages.map((message, index) => renderMessage(message, index))}
@@ -369,6 +343,7 @@ const ChatInterface = () => {
                 type="text"
                 value={userInput}
                 onChange={(e) => {
+                  console.log('Input changed:', e.target.value);
                   setUserInput(e.target.value);
                 }}
                 placeholder="Type your question here..."
@@ -380,6 +355,7 @@ const ChatInterface = () => {
                 className="send-button"
                 disabled={!userInput.trim() || isLoading}
                 onClick={() => {
+                  console.log('Send button clicked, userInput:', userInput);
                   if (userInput.trim() && !isLoading) {
                     handleUserInputSubmit(new Event('submit') as any);
                   }
@@ -453,4 +429,4 @@ const ChatInterface = () => {
   );
 };
 
-export default ChatInterface; 
+export default MainChatInterface; 

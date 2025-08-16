@@ -10,7 +10,7 @@ RESPONSE FORMATTING GUIDELINES:
 - Use bullet points (•) for lists and key points
 - Structure responses with clear sections and proper spacing
 - Use numbered lists (1. 2. 3.) for step-by-step processes
-- Keep responses conversational but well-organized
+- Keep responses conversational but well-organized,
 - DO NOT use markdown formatting symbols like ###, ##, **, *, \`, or [text](url)
 - Provide clean, plain text responses that are easy to read
 - Use simple text formatting with line breaks and bullet points only

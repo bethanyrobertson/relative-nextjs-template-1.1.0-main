@@ -51,32 +51,32 @@ const MotionGrid = ({
     frames[index]?.map(([x, y]) => y * cols + x) ?? [],
   );
 
-  return (
-    <div
-      className={cn('grid w-fit gap-0.5', className)}
-      style={{
-        ...style,
-        gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
-        gridAutoRows: '1fr',
-      }}
-      {...props}
-    >
-      {Array.from({ length: cols * rows }).map((_, i) => (
-        <motion.div
-          key={i}
-          className={cn(
-            'size-3 rounded-full aspect-square',
-            active.has(i)
-              ? cn('bg-primary scale-110', cellActiveClassName)
-              : cn('bg-muted scale-100', cellInactiveClassName),
-            cellClassName,
-          )}
-          {...cellProps}
-          transition={{ duration, ease: 'easeInOut' }}
-        />
-      ))}
-    </div>
-  );
+      return (
+      <div
+        className={cn('grid w-fit gap-0.5', className)}
+        style={{
+          ...style,
+          gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
+          gridAutoRows: '1fr',
+        }}
+        {...props}
+      >
+        {Array.from({ length: cols * rows }).map((_, i) => (
+          <motion.div
+            key={i}
+            className={cn(
+              'size-3 rounded-full aspect-square',
+              active.has(i)
+                ? cn('bg-primary scale-110', cellActiveClassName)
+                : cn('bg-muted scale-100', cellInactiveClassName),
+              cellClassName,
+            )}
+            {...cellProps}
+            transition={{ duration, ease: 'easeInOut' }}
+          />
+        ))}
+      </div>
+    );
 };
 
 export {

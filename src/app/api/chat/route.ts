@@ -73,6 +73,27 @@ async function handleButtonAction(message: string, context: any) {
     });
   }
 
+  // Handle specific actions that don't need AI processing
+  if (action === "DOWNLOAD_RESUME") {
+    return NextResponse.json({
+      message: {
+        message: "Here's my resume! The download should start automatically. It contains my full experience, skills, and project details.",
+        buttons: [
+          {
+            id: "main_menu",
+            text: "Main Menu",
+            icon: "home",
+            action: "MAIN_MENU",
+            variant: "outline",
+            linkType: "internal"
+          }
+        ],
+        metadata: { level: 1, section: "resume" },
+        downloadUrl: "/assets/Bethany_Resume.pdf"
+      }
+    });
+  }
+
   try {
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
